@@ -1,0 +1,218 @@
+# -*- coding: utf-8 -*-
+
+import ConfigParser
+import email
+import getpass
+import os
+import poplib
+
+from actions import MailedAction
+from tools.logger import Debug, Info, Warn, Error
+
+def read_fetch_mail_config(config_file, param, default=None):
+    """
+    config_file is assumed to be a valid file
+    returns:
+        FIXME
+    """
+    # TODO complete the docstring
+
+    config = ConfigParser.SafeConfigParser()
+    config.read(config_file)
+
+    # TODO check if the configuration file contains valid information
+    # if not, raise an exception?
+    try:
+        res = config.get('fetch_mail', param)
+    except ConfigParser.NoOptionError:
+        if default is None:
+            raise ValueError(
+"""Missing parameter '%s' in the configuration file %s".
+Could not continue with a default value""" % (param, config_file))
+        else:
+            res = default
+
+    Debug(" configuration file : %s" % (config_file))
+    Debug(" %s             : %s" % (param, res))
+    return res
+
+
+class Mail(object):
+    def __init__(self, subject, body, attachment = None):
+        self._subject = subject
+        self._body = body
+        self._attachment = attachment
+        charset = 'utf-8'
+        self._msg            = email.MIMEText(body, _charset  = charset)
+        self._msg['Subject'] = email.Header(subject, charset)
+    def subject(self):
+        return self._subject
+    def body(self):
+        return self._body
+    def attachment(self):
+        return self._attachment
+    def send(self, mailer, dest):
+        # Attachments are not handled
+        Info("=== sending mail to %s === " % (dest) )
+        Info(" [subject] \n%s" % (self.subject()) )
+        Info(" [body] \n%s" % (self.body()) )
+
+        self._msg['To']      = dest
+        mailer.send(dest, self._msg)
+
+
+class MailClient(object):
+    def __init__(self, config_file):
+
+        self._server  = read_fetch_mail_config(config_file, 'server', 'localhost')
+        self._port    = read_fetch_mail_config(config_file, 'port', 110)
+        self._user    = read_fetch_mail_config(config_file, 'user', getpass.getuser())
+        self._passwd  = read_fetch_mail_config(config_file, 'passwd', getpass.getpass())
+        self._savedir = read_fetch_mail_config(config_file, 'savedir', '/tmp')
+
+        # methods that will process specific MIME contents
+        self._processors = {
+                'text/plain' : self.__process_text,
+                'text/html' : self.__process_text,
+                }
+
+    def fetch(self, delete_msg = True):
+        """
+        connects to the mail server,
+        saves all attachments in savedir,
+        and returns a list of Mail instances
+        .
+        by default, deletes the emails on the server
+        To leave the messages on the server, use delete_msg = False
+        """
+        #self._connection = poplib.POP3_SSL('pop.gmail.com', 995)
+        self._connection = poplib.POP3(self._server)
+        # TODO récupérer le niveau de debug du logger pour paramétrer le
+        # debuglevel ici?
+        #self._connection.set_debuglevel(1)
+        self._connection.user(self._user)
+        self._connection.pass_(self._passwd)
+
+        email_nb, total_bytes = self._connection.stat()
+        Debug("{0} emails in the inbox, {1} bytes total".format(email_nb, total_bytes))
+        # return is in format: (response, ['mesg_num octets', ...], octets)
+        msg_list = self._connection.list()
+
+        mails = list()
+
+        # processing messages
+        for i in range(email_nb):
+            email_no = i+1
+            Debug("=== reading email %d ===" % email_no)
+
+            # return is in format: (response, ['line', ...], octets)
+            response = self._connection.retr(email_no)
+            raw_message = response[1]
+
+            str_message = email.message_from_string("\n".join(raw_message))
+            Debug(str_message)
+
+            # walk over the message contents
+            atts = list()
+            for part in str_message.walk():
+                mail = dict() # stores email contents; associates the content
+                              # parts with its type
+                attachments = list()
+
+                content = part.get_content_type()
+                Debug("  content type : %s" % content)
+
+                if part.get_content_maintype() == 'multipart':
+                    continue
+
+                processor = self._processors.get(content)
+
+                # process part contents
+                if processor is not None:
+                    if mail.get(content) is not None:
+                        raise ValueError("""I have already stored contents of type %s.
+                                            I need a new implementation!!! """ % content)
+                    mail[content] = processor(part, email_no)
+                else:
+                    atts.append(self.__process_attachment(part, email_no))
+
+            body = u""
+            for k in mail.keys():
+                body += mail.get(k)
+
+            Debug("list of attachments for mail #%d: %s" % (email_no, atts))
+
+            subject =  getmailheader(str_message.get('Subject', ''))
+            Debug("= subject: %s" % subject)
+            mails.append(MailedAction( subject
+                                     , body
+                                     , atts
+                                     , str_message.get('Date')
+                                     ))
+            if delete_msg:
+                Debug("mark message %d for deletion" % email_no)
+                self._connection.dele(email_no)
+
+        self._connection.quit()
+        return mails
+
+    def __process_text(self, part, email_no):
+        # FIXME could use emails.get_param(param, failobj...)
+        try:
+            payload = part.get_payload(decode=True).decode(part.get_content_charset())
+            payload += "\n=== mailToOrg debug info <START> ===\n"
+            payload += "  charset = %s\n" % part.get_content_charset()
+            payload += "=== mailToOrg debug info <END> ===\n"
+        except TypeError:
+            Warn(part)
+            Warn("Could not retrieve mail body for email %d." % email_no)
+            payload = "<mail body is missing>"
+
+        #Info(payload)
+        return payload
+
+    def __process_attachment(self, part, email_no):
+        # TODO: should handle the case where the file already exists
+        filename = part.get_filename()
+        if not(filename):
+            filename = "attachment.txt"
+
+        fullname = os.path.join(self._savedir, filename)
+        Debug("  attachment saved to: %s" % fullname)
+        if os.path.isfile(fullname):
+            Warn("Skipping attachment %s. A file with the same name was found. " % fullname)
+        with open(fullname, 'wb') as f:
+            f.write(part.get_payload(decode=True))
+
+        return fullname
+
+def getmailheader(header_text, default="ascii"):
+    """
+    Decode header_text if needed
+    Source: Alain Spineux (pyzmail) -- http://blog.magiksys.net/parsing-email-using-python-content
+    """
+    try:
+        headers=email.Header.decode_header(header_text)
+    except email.Errors.HeaderParseError:
+        # This already append in email.base64mime.decode()
+        # instead return a sanitized ascii string
+        # this faile '=?UTF-8?B?15HXmdeh15jXqNeVINeY15DXpteUINeTJ9eV16jXlSDXkdeg15XXldeUINem15PXpywg15TXptei16bXldei15nXnSDXqdecINek15zXmdeZ?==?UTF-8?B?157XldeR15nXnCwg157Xldek16Ig157Xl9eV15wg15HXodeV15bXnyDXk9ec15DXnCDXldeh15gg157Xl9eR16rXldeqINep15wg15HXmdeQ?==?UTF-8?B?15zXmNeZ?='
+        return header_text.encode('ascii', 'replace').decode('ascii')
+    else:
+        for i, (text, charset) in enumerate(headers):
+            try:
+                headers[i]=unicode(text, charset or default, errors='replace')
+            except LookupError:
+                # if the charset is unknown, force default
+                headers[i]=unicode(text, default, errors='replace')
+        return u"".join(headers)
+
+
+def fetch_test():
+    d=MailClient()
+    d.fetch(delete_msg = False)
+
+
+if __name__ == '__main__':
+    fetch_test()
+
