@@ -9,7 +9,8 @@ import poplib
 from actions import MailedAction
 from tools.logger import Debug, Info, Warn, Error
 
-def read_fetch_mail_config(config_file, param, default=None):
+def read_fetch_mail_config(config_file, param, default=None,
+        method=ConfigParser.SafeConfigParser.get):
     """
     config_file is assumed to be a valid file
     returns:
@@ -23,7 +24,7 @@ def read_fetch_mail_config(config_file, param, default=None):
     # TODO check if the configuration file contains valid information
     # if not, raise an exception?
     try:
-        res = config.get('fetch_mail', param)
+        res = method(config, 'fetch_mail', param)
     except ConfigParser.NoOptionError:
         if default is None:
             raise ValueError(
@@ -75,20 +76,21 @@ class MailClient(object):
 
         self._savedir = read_fetch_mail_config(config_file, 'savedir', '/tmp')
 
+        # By default, leaves emails on the server
+        self._delete  = read_fetch_mail_config(config_file, 'delete_msg',
+                False, ConfigParser.SafeConfigParser.getboolean)
+
         # methods that will process specific MIME contents
         self._processors = {
                 'text/plain' : self.__process_text,
                 'text/html' : self.__process_text,
                 }
 
-    def fetch(self, delete_msg = True):
+    def fetch(self):
         """
         connects to the mail server,
         saves all attachments in savedir,
         and returns a list of Mail instances
-        .
-        by default, deletes the emails on the server
-        To leave the messages on the server, use delete_msg = False
         """
         #self._connection = poplib.POP3_SSL('pop.gmail.com', 995)
         self._connection = poplib.POP3(self._server)
@@ -156,7 +158,7 @@ class MailClient(object):
                                      , atts
                                      , str_message.get('Date')
                                      ))
-            if delete_msg:
+            if self._delete is True:
                 Debug("mark message %d for deletion" % email_no)
                 self._connection.dele(email_no)
 
@@ -221,7 +223,7 @@ def getmailheader(header_text, default="ascii"):
 
 def fetch_test():
     d=MailClient()
-    d.fetch(delete_msg = False)
+    d.fetch()
 
 
 if __name__ == '__main__':

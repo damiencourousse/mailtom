@@ -28,7 +28,7 @@ class MailToOrg:
         # TODO add support for the delete_msg option
         # TODO in the config file
         # TODO from command line options
-        mail_list = mclient.fetch(delete_msg = False)
+        mail_list = mclient.fetch()
 
         printer = printers.MailToOrgMode()
 
