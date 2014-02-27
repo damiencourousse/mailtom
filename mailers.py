@@ -67,7 +67,12 @@ class MailClient(object):
         self._server  = read_fetch_mail_config(config_file, 'server', 'localhost')
         self._port    = read_fetch_mail_config(config_file, 'port', 110)
         self._user    = read_fetch_mail_config(config_file, 'user', getpass.getuser())
-        self._passwd  = read_fetch_mail_config(config_file, 'passwd', getpass.getpass())
+
+        # self._passwd: do not use getpass.getpass() as the default value,
+        # because getpass() would be evaluated, i.e. the user is asked for a
+        # password even if there is a valid line in the configuration file.
+        self._passwd  = read_fetch_mail_config(config_file, 'passwd', None)
+
         self._savedir = read_fetch_mail_config(config_file, 'savedir', '/tmp')
 
         # methods that will process specific MIME contents
@@ -91,6 +96,8 @@ class MailClient(object):
         # debuglevel ici?
         #self._connection.set_debuglevel(1)
         self._connection.user(self._user)
+        if self._passwd is None:
+            self._passwd = getpass.getpass()
         self._connection.pass_(self._passwd)
 
         email_nb, total_bytes = self._connection.stat()
@@ -182,7 +189,11 @@ class MailClient(object):
         if os.path.isfile(fullname):
             Warn("Skipping attachment %s. A file with the same name was found. " % fullname)
         with open(fullname, 'wb') as f:
-            f.write(part.get_payload(decode=True))
+            data = part.get_payload(decode=True)
+            if data is not None:
+                f.write(data)
+            else:
+                Warn("(email %d) Could not retrieve attachment %s" % (email_no, fullname))
 
         return fullname
 
