@@ -166,7 +166,6 @@ class MailClient(object):
         return mails
 
     def __process_text(self, part, email_no):
-        # FIXME could use emails.get_param(param, failobj...)
         try:
             payload = part.get_payload(decode=True).decode(part.get_content_charset())
             payload += "\n=== mailToOrg debug info <START> ===\n"
@@ -181,7 +180,6 @@ class MailClient(object):
         return payload
 
     def __process_attachment(self, part, email_no):
-        # TODO: should handle the case where the file already exists
         filename = part.get_filename()
         if not(filename):
             filename = "attachment.txt"
