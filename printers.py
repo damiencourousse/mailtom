@@ -25,19 +25,19 @@ class MailToOrgMode(object):
         msg += u"\n"
 
         # # deadline, scheduled date
-        #if (0 != len(action.due_date())):
-            #body += u"  DEADLINE: <"  + action.due_date('%Y-%m-%d %b.') + ">"
-            ## do not push a carriage return here, DEADLINE and SCHEDULED are
-            ## written on the same body line
+        if mail.deadline() is not None:
+            msg += u"  DEADLINE: <"  + mail.deadline().strftime('%Y-%m-%d %b.') + ">\n"
+            # do not push a carriage return here, DEADLINE and SCHEDULED are
+            # written on the same body line
         #if action.is_scheduled():
-            #body += u"  SCHEDULED: <"  + action.scheduled_date('%Y-%m-%d %b.') + ">"
+            #msg += u"  SCHEDULED: <"  + action.scheduled_date('%Y-%m-%d %b.') + ">"
         #if (0 != len(action.due_date())) or action.is_scheduled():
-            #body += u"\n"
+            #msg += u"\n"
         msg += u"  :PROPERTIES:\n"
         msg += u"  :CREATED: ["  + mail.date().strftime('%Y-%m-%d %b. %H:%M') + "]\n"
 
         # topic
-        #body += u"  :CATEGORY:"  + action.topic() + "\n"
+        #msg += u"  :CATEGORY:"  + action.topic() + "\n"
 
         msg += u"  :END:\n"
 

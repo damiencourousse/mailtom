@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-from datetime import datetime
+import datetime
 import email.utils
 
 from tools.logger import Debug, Info, Warn, Error
@@ -14,14 +14,35 @@ class MailedAction(object):
                 , attachment_list = None
                 , date = None
                 ):
+        self._known_dl = { 'full8' : self.__process_dl_full8
+                         , 'full6' : self.__process_dl_full6
+                         , 'plus'  : self.__process_dl_plus
+                         }
         self._subject     = subject
         self._body        = body
         self._attachments = attachment_list
         self._date        = date
+
+        # the space before @ prevents considering postfixes of email adresses
+        # as context keywords
         self._ptn_ctx     = re.compile(r" (@\w+)", re.VERBOSE)
+
+        self._ptn_dl      = re.compile(r"d:(?P<full8>\d{8})|(?P<full6>\d{6})|\+(?P<plus>\d+)", re.VERBOSE)
     def subject(self):
+        s = self._subject
+
         # filter out contexts from the original subject string
-        return re.sub(self._ptn_ctx, "", self._subject)
+        s = re.sub(self._ptn_ctx, "", s)
+
+        # filter out deadlines
+        s = re.sub(self._ptn_dl, "", s)
+        if re.search(self._ptn_dl, self._subject) is not None:
+            # if deadlines are found in the mail subject, we also need to
+            # filter out the 'd:' prefix
+            s = re.sub(r"d:", "", s)
+
+        return s
+
     def body(self):
         return self._body
     def context(self):
@@ -34,7 +55,32 @@ class MailedAction(object):
         http://bugs.python.org/issue6641
         http://www.beyondlinux.com/2012/02/06/how-to-convert-string-with-timezone-info-to-date-in-python/
         """
-        return datetime(*email.utils.parsedate_tz(self._date)[:6])
+        return datetime.datetime(*email.utils.parsedate_tz(self._date)[:6])
+    def deadline(self):
+        try:
+            for k, v in re.search(self._ptn_dl, self._subject).groupdict().iteritems():
+                if v is not None:
+                    Debug(k)
+                    return self._known_dl.get(k)(v)
+        except AttributeError:
+            # groupdict() returned None
+            # if none of the deadline formats was found, return None
+            return None
+    def __process_dl_full8(self, date):
+        """
+        returns a datetime object according to the date8 pattern matching
+        """
+        return datetime.datetime.strptime(date, '%Y%m%d')
+    def __process_dl_full6(self, date):
+        """
+        returns a datetime object according to the date6 pattern matching
+        """
+        return datetime.datetime.strptime(date, '%y%m%d')
+    def __process_dl_plus(self, date):
+        """
+        FIXME docstring
+        """
+        return self.date() + datetime.timedelta(int(date))
     def attachments(self):
         """
         returns the list of attachment filenames
@@ -53,9 +99,15 @@ def MailedMain():
     print a.subject()
     print a.body()
     print a.context()
-    print a.date()
-    a._subject = "s"
+    # print a.date()
+    a._subject = "task description"
     print a.context()
+    a._subject = "deadline description d:140303"
+    print a.deadline()
+    a._subject = "deadline description d:+3"
+    print a.deadline()
+    a._subject = "deadline description d:20140303"
+    print a.deadline()
 
 
 if __name__ == '__main__':
