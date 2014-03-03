@@ -40,8 +40,9 @@ class MailToOrgMode(object):
         #body += u"  :CATEGORY:"  + action.topic() + "\n"
 
         msg += u"  :END:\n"
+
         # == task data
-        msg += u"   - Note taken on [] \\\\\n"
+        msg += u"   - Note taken on [%s] \\\\\n" % mail.date().strftime('%Y-%m-%d %b. %H:%M')
         if mail.attachments() != []:
             msg += u"   - Fichiers joints: \n"
             for a in mail.attachments():
