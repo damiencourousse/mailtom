@@ -168,9 +168,9 @@ class MailClient(object):
     def __process_text(self, part, email_no):
         try:
             payload = part.get_payload(decode=True).decode(part.get_content_charset())
-            payload += "\n=== mailToOrg debug info <START> ===\n"
-            payload += "  charset = %s\n" % part.get_content_charset()
-            payload += "=== mailToOrg debug info <END> ===\n"
+            Debug("\n=== mailToOrg debug info <START> ===\n")
+            Debug("  charset = %s\n" % part.get_content_charset())
+            Debug("=== mailToOrg debug info <END> ===\n")
         except TypeError:
             Warn(part)
             Warn("Could not retrieve mail body for email %d." % email_no)
