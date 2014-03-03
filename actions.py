@@ -18,13 +18,14 @@ class MailedAction(object):
         self._body        = body
         self._attachments = attachment_list
         self._date        = date
-        self._ctx_ptn     = re.compile(r" (@\w+)", re.VERBOSE)
+        self._ptn_ctx     = re.compile(r" (@\w+)", re.VERBOSE)
     def subject(self):
-        return self._subject
+        # filter out contexts from the original subject string
+        return re.sub(self._ptn_ctx, "", self._subject)
     def body(self):
         return self._body
     def context(self):
-        return self._ctx_ptn.findall(self._subject)
+        return self._ptn_ctx.findall(self._subject)
     def date(self):
         """ returns a datetime object
         .
