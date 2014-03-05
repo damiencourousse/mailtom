@@ -124,27 +124,46 @@ class MailedAction(object):
 
 
 def MailedMain():
-    a = MailedAction( "description @context @context2"
+    from email.header import Header
+    a = MailedAction("description @context @context2"
                     , """body
                          multilined
                       """
-                    , "Wed, 19 Feb 2014 16:12:13 +0100"
-                    , ["att1.txt", "att2.txt"]
-                    )
+                      , date = " Wed, 05 Mar 2014 23:24:25 +0100"
+                      )
+    print "################################"
     print a.subject()
     print a.body()
     print a.context()
-    # print a.date()
+    print a.date()
+    print "################################"
     a._subject = "task description"
     print a.context()
+    print "################################"
     a._subject = "deadline description d:140303"
-    print a.deadline()
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
     a._subject = "deadline in three days d:+3"
-    print a.deadline()
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
     a._subject = "deadline 2014, march the 3rd d:20140303"
-    print a.deadline()
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
     a._subject = "deadline in 2 weeks d:+2w"
-    print a.deadline()
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
+    a._subject = "scheduled in 2 weeks s:+2w"
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
+    a._subject = "starts tomorrow, due in 1 week d:+1 s:+1w"
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "> subject: %s" % a.subject()
 
 
 if __name__ == '__main__':
