@@ -17,6 +17,7 @@ class MailedAction(object):
         self._known_dl = { 'full8' : self.__process_dl_full8
                          , 'full6' : self.__process_dl_full6
                          , 'plus'  : self.__process_dl_plus
+                         , 'weeks' : self.__process_dl_weeks
                          }
         self._subject     = subject
         self._body        = body
@@ -27,7 +28,12 @@ class MailedAction(object):
         # as context keywords
         self._ptn_ctx     = re.compile(r" (@\w+)", re.VERBOSE)
 
-        self._ptn_dl      = re.compile(r"d:(?P<full8>\d{8})|(?P<full6>\d{6})|\+(?P<plus>\d+)", re.VERBOSE)
+        self._ptn_dl      = re.compile(r"""
+            d:(?P<full8>\d{8})    # 8 digits: yyyymmdd
+             |(?P<full6>\d{6})    # 6 digits: yymmdd
+             |\+(?P<weeks>\d+)w   # n weeks from now
+             |\+(?P<plus>\d+)     # n days from now"""
+            , re.VERBOSE)
     def subject(self):
         s = self._subject
 
@@ -60,11 +66,13 @@ class MailedAction(object):
         try:
             for k, v in re.search(self._ptn_dl, self._subject).groupdict().iteritems():
                 if v is not None:
-                    Debug(k)
+                    Debug(" deadline string found: %s" % v)
+                    Debug(" matching with: %s" % k)
                     return self._known_dl.get(k)(v)
         except AttributeError:
             # groupdict() returned None
             # if none of the deadline formats was found, return None
+            Debug(" no deadline match found for: %s" % self._subject)
             return None
     def __process_dl_full8(self, date):
         """
@@ -81,6 +89,11 @@ class MailedAction(object):
         FIXME docstring
         """
         return self.date() + datetime.timedelta(int(date))
+    def __process_dl_weeks(self, date):
+        """
+        FIXME docstring
+        """
+        return self.date() + datetime.timedelta(0, weeks=int(date))
     def attachments(self):
         """
         returns the list of attachment filenames
@@ -104,9 +117,11 @@ def MailedMain():
     print a.context()
     a._subject = "deadline description d:140303"
     print a.deadline()
-    a._subject = "deadline description d:+3"
+    a._subject = "deadline in three days d:+3"
     print a.deadline()
-    a._subject = "deadline description d:20140303"
+    a._subject = "deadline 2014, march the 3rd d:20140303"
+    print a.deadline()
+    a._subject = "deadline in 2 weeks d:+2w"
     print a.deadline()
 
 
