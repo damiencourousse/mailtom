@@ -32,7 +32,7 @@ class MailedAction(object):
             d:(?P<full8>\d{8})    # 8 digits: yyyymmdd
              |(?P<full6>\d{6})    # 6 digits: yymmdd
              |\+(?P<weeks>\d+)w   # n weeks from now
-             |\+(?P<plus>\d+)     # n days from now"""
+             |\+(?P<plus>\d+)d?   # n days from now"""
             , re.VERBOSE)
     def subject(self):
         s = self._subject
