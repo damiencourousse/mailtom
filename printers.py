@@ -11,6 +11,7 @@ class MailToOrgMode(object):
     returns a text buffer as a suitable input for org-mode
     """
     def process(self, mail):
+        Debug("==== processing mail : %s" % mail.subject())
         msg = u""
 
         # == task headline
@@ -24,21 +25,23 @@ class MailToOrgMode(object):
             msg += ":"
         msg += u"\n"
 
-        # # deadline, scheduled date
-        if mail.deadline() is not None:
-            msg += u"  DEADLINE: <"  + mail.deadline().strftime('%Y-%m-%d %b.') + ">\n"
-            # do not push a carriage return here, DEADLINE and SCHEDULED are
-            # written on the same body line
-        #if action.is_scheduled():
-            #msg += u"  SCHEDULED: <"  + action.scheduled_date('%Y-%m-%d %b.') + ">"
-        #if (0 != len(action.due_date())) or action.is_scheduled():
-            #msg += u"\n"
+        # add deadline info
+        deadline = mail.deadline()
+        Debug(")) deadline: %s" % deadline)
+        if deadline is not None:
+            msg += u"  DEADLINE: <"  + deadline.strftime('%Y-%m-%d %b.') + ">\n"
+
+        # add scheduled info
+        scheduled = mail.scheduled()
+        Debug(")) scheduled: %s "% scheduled)
+        if scheduled is not None:
+            msg += u"  SCHEDULED: <"  + scheduled.strftime('%Y-%m-%d %b.') + ">\n"
+
+        # create task drawer with creation date info
         msg += u"  :PROPERTIES:\n"
         msg += u"  :CREATED: ["  + mail.date().strftime('%Y-%m-%d %b. %H:%M') + "]\n"
-
         # topic
         #msg += u"  :CATEGORY:"  + action.topic() + "\n"
-
         msg += u"  :END:\n"
 
         # == task data

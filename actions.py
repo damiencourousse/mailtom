@@ -28,12 +28,14 @@ class MailedAction(object):
         # as context keywords
         self._ptn_ctx     = re.compile(r" (@\w+)", re.VERBOSE)
 
-        self._ptn_dl      = re.compile(r"""
-            d:(?P<full8>\d{8})    # 8 digits: yyyymmdd
-             |(?P<full6>\d{6})    # 6 digits: yymmdd
-             |\+(?P<weeks>\d+)w   # n weeks from now
-             |\+(?P<plus>\d+)d?   # n days from now"""
-            , re.VERBOSE)
+        dates_regexes = [ r"(?P<full8>\d{8})"    # 8 digits: yyyymmdd
+                        , r"(?P<full6>\d{6})"    # 6 digits: yymmdd
+                        , r"\+(?P<weeks>\d+)w"   # n weeks from now
+                        , r"\+(?P<plus>\d+)d?"   # n days from now
+                        ]
+        self._ptn_dl = re.compile(r"|".join([r"d:"+d for d in dates_regexes]), re.VERBOSE)
+        self._ptn_sl = re.compile(r"|".join([r"s:"+d for d in dates_regexes]), re.VERBOSE)
+
     def subject(self):
         s = self._subject
 
@@ -47,6 +49,12 @@ class MailedAction(object):
             # filter out the 'd:' prefix
             s = re.sub(r"d:", "", s)
 
+        # filter out scheduled info
+        s = re.sub(self._ptn_sl, "", s)
+        if re.search(self._ptn_sl, self._subject) is not None:
+            # if deadlines are found in the mail subject, we also need to
+            # filter out the 'd:' prefix
+            s = re.sub(r"s:", "", s)
         return s
 
     def body(self):
@@ -64,6 +72,7 @@ class MailedAction(object):
         return datetime.datetime(*email.utils.parsedate_tz(self._date)[:6])
     def deadline(self):
         try:
+            Debug("deadline searches: %s" % re.search(self._ptn_dl, self._subject).groupdict())
             for k, v in re.search(self._ptn_dl, self._subject).groupdict().iteritems():
                 if v is not None:
                     Debug(" deadline string found: %s" % v)
@@ -73,6 +82,19 @@ class MailedAction(object):
             # groupdict() returned None
             # if none of the deadline formats was found, return None
             Debug(" no deadline match found for: %s" % self._subject)
+            return None
+    def scheduled(self):
+        try:
+            Debug("schedule searches: %s" % re.search(self._ptn_sl, self._subject).groupdict())
+            for k, v in re.search(self._ptn_sl, self._subject).groupdict().iteritems():
+                if v is not None:
+                    Debug(" scheduled string found: %s" % v)
+                    Debug(" matching with: %s" % k)
+                    return self._known_dl.get(k)(v)
+        except AttributeError:
+            # groupdict() returned None
+            # if none of the scheduled formats was found, return None
+            Debug(" no scheduled match found for: %s" % self._subject)
             return None
     def __process_dl_full8(self, date):
         """
