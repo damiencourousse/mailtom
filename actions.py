@@ -59,8 +59,10 @@ class MailedAction(object):
 
     def body(self):
         return self._body
+
     def context(self):
         return self._ptn_ctx.findall(self._subject)
+
     def date(self):
         """ returns a datetime object
         .
@@ -70,52 +72,50 @@ class MailedAction(object):
         http://www.beyondlinux.com/2012/02/06/how-to-convert-string-with-timezone-info-to-date-in-python/
         """
         return datetime.datetime(*email.utils.parsedate_tz(self._date)[:6])
+
     def deadline(self):
-        try:
-            Debug("deadline searches: %s" % re.search(self._ptn_dl, self._subject).groupdict())
-            for k, v in re.search(self._ptn_dl, self._subject).groupdict().iteritems():
-                if v is not None:
-                    Debug(" deadline string found: %s" % v)
-                    Debug(" matching with: %s" % k)
-                    return self._known_dl.get(k)(v)
-        except AttributeError:
-            # groupdict() returned None
-            # if none of the deadline formats was found, return None
-            Debug(" no deadline match found for: %s" % self._subject)
-            return None
+        return self.__search_pattern(self._ptn_dl)
+
     def scheduled(self):
+        return self.__search_pattern(self._ptn_sl)
+
+    def __search_pattern(self, ptn):
         try:
-            Debug("schedule searches: %s" % re.search(self._ptn_sl, self._subject).groupdict())
-            for k, v in re.search(self._ptn_sl, self._subject).groupdict().iteritems():
+            for k, v in re.search(ptn, self._subject).groupdict().iteritems():
                 if v is not None:
-                    Debug(" scheduled string found: %s" % v)
+                    Debug(" pattern string found: %s" % v)
                     Debug(" matching with: %s" % k)
                     return self._known_dl.get(k)(v)
         except AttributeError:
             # groupdict() returned None
             # if none of the scheduled formats was found, return None
-            Debug(" no scheduled match found for: %s" % self._subject)
+            Debug(" no pattern match found for: %s" % self._subject)
             return None
+
     def __process_dl_full8(self, date):
         """
         returns a datetime object according to the date8 pattern matching
         """
         return datetime.datetime.strptime(date, '%Y%m%d')
+
     def __process_dl_full6(self, date):
         """
         returns a datetime object according to the date6 pattern matching
         """
         return datetime.datetime.strptime(date, '%y%m%d')
+
     def __process_dl_plus(self, date):
         """
         FIXME docstring
         """
         return self.date() + datetime.timedelta(int(date))
+
     def __process_dl_weeks(self, date):
         """
         FIXME docstring
         """
         return self.date() + datetime.timedelta(0, weeks=int(date))
+
     def attachments(self):
         """
         returns the list of attachment filenames
