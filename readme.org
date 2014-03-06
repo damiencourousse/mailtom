@@ -1,0 +1,114 @@
+* Overview
+
+mailtom reads an email box and process its contents to a text output suitable for org-mode.
+Each email consists in one task that will enter into your org-mode tasks.
+
+The tool is configured with a simple configuration file.
+An configuration example is provided: example.cfg.
+
+* Configuration file
+
+By default, mailtom looks for a configuration file =.mailtom.cfg= in you =$HOME= directory.
+To provide another path to the configuration file, use the =-c= // =--config= option:
+#+BEGIN_SRC bash
+$ ./mailtom.py -c example.cfg
+#+END_SRC
+
+The command line options always take precedence over the settings of the configuration file.
+However, currently some configuration settings are not available via command line options!
+
+* program output
+
+By default, mailtom outputs the processing results to =stdout=.
+The command line =-o= // =--output= tells mailtom to append the processing results to the specified file.
+
+* mail format
+** email subject
+The email subject will constitute the header of the org-mode task.
+Contexts, deadlines and scheduled dates found in the email subject are removed from the subject, but the information is added to the metadata or the org-mode task.
+
+** email body
+The email body is copied as is in the body of the org-mode task.
+
+** email attachments
+Email attachments are retrieved and copied to the attachment destination, specified in the configuration file.
+
+** Specifying contexts
+A context is a word preceded by the '@' character.
+#+BEGIN_EXAMPLE
+@phone
+#+END_EXAMPLE
+
+** date keywords
+
+Several date formats are supported: 
+- date format with 8 digits, as follows: =yyyymmdd=
+- date format with 6 digits, as follows: =yymmdd=
+- n days after the email's date: =+n= or =+nd= [1]
+- n weeks after the email's date: =+nw= [1]
+
+** Specifying deadlines
+
+A deadline is a date keyword preceded by the string "d:". 
+
+For example, a deadline due to march the 25th, 2014:
+#+BEGIN_EXAMPLE
+d:140325
+#+END_EXAMPLE
+
+or within two days:
+#+BEGIN_EXAMPLE
+d:+2
+#+END_EXAMPLE
+
+** Specifying scheduled dates
+
+A scheduled date is a date keyword preceded by the string "s:". 
+
+For example, to schedule a task within three weeks:
+#+BEGIN_EXAMPLE
+s:+3w
+#+END_EXAMPLE
+
+
+* example
+
+The following email message:
+
+#+BEGIN_EXAMPLE
+Date: Wed, 06 Mar 2014 22:17:25 +0100
+(... data filtered out)
+Subject: s:+3w send a mail to Tom @work
+
+These are my notes for this important task!
+
+-- 
+[Citation aléatoire]
+"It would seem that you have no useful skill or talent whatsoever," he said.
+"Have you thought of going into teaching?"
+-+- Terry Pratchett, Mort -+-
+#+END_EXAMPLE
+
+will end into this org-mode task:
+
+#+BEGIN_EXAMPLE
+ * INACTIVE  send a mail to Tom 					      :@work:
+   SCHEDULED: <2014-03-27 Mar.>
+   :PROPERTIES:
+   :CREATED: [2014-03-06 Mar. 22:17]
+   :END:
+    - Note taken on [2014-03-06 Mar. 22:17] \\
+ These are my notes for this important task!
+ 
+ -- 
+ [Citation aléatoire]
+ "It would seem that you have no useful skill or talent whatsoever," he said.
+ "Have you thought of going into teaching?"
+ -+- Terry Pratchett, Mort -+-
+#+END_EXAMPLE
+
+
+
+
+[1] n is an integer number
+
