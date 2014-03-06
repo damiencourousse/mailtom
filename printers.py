@@ -15,8 +15,6 @@ class MailToOrgMode(object):
         msg = u""
 
         # == task headline
-        # TODO delete context keywords from the subject string
-        # TODO add support for deadlines
         msg += u"* INACTIVE " + mail.subject()
         # add contexts
         if mail.context() != []:
@@ -27,13 +25,11 @@ class MailToOrgMode(object):
 
         # add deadline info
         deadline = mail.deadline()
-        Debug(")) deadline: %s" % deadline)
         if deadline is not None:
             msg += u"  DEADLINE: <"  + deadline.strftime('%Y-%m-%d %b.') + ">\n"
 
         # add scheduled info
         scheduled = mail.scheduled()
-        Debug(")) scheduled: %s "% scheduled)
         if scheduled is not None:
             msg += u"  SCHEDULED: <"  + scheduled.strftime('%Y-%m-%d %b.') + ">\n"
 
@@ -54,5 +50,4 @@ class MailToOrgMode(object):
         msg += u"\n"
 
         return msg.encode('utf-8')
-
 

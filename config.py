@@ -16,7 +16,7 @@ def find_config_file(self, config_entry = DEFAULT_CFG):
 
     Debug("config_entry = %s" % config_entry)
     if (path.exists(config_entry)):
-        Info("Using the configuration file %s for gtdToMail" % config_entry)
+        Info("Using configuration file %s " % config_entry)
         return config_entry
 
     # fallback: no config file found
