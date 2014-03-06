@@ -106,13 +106,13 @@ class MailedAction(object):
 
     def __process_dl_plus(self, date):
         """
-        FIXME docstring
+        returns a datetime object according to the plus pattern matching
         """
         return self.date() + datetime.timedelta(int(date))
 
     def __process_dl_weeks(self, date):
         """
-        FIXME docstring
+        returns a datetime object according to the weeks pattern matching
         """
         return self.date() + datetime.timedelta(0, weeks=int(date))
 

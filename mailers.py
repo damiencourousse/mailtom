@@ -13,16 +13,12 @@ def read_fetch_mail_config(config_file, param, default=None,
         method=ConfigParser.SafeConfigParser.get):
     """
     config_file is assumed to be a valid file
-    returns:
-        FIXME
+    .
+    returns: an instance of the SafeConfigParser clas from ConfigParser
     """
-    # TODO complete the docstring
-
     config = ConfigParser.SafeConfigParser()
     config.read(config_file)
 
-    # TODO check if the configuration file contains valid information
-    # if not, raise an exception?
     try:
         res = method(config, 'fetch_mail', param)
     except ConfigParser.NoOptionError:
@@ -94,8 +90,6 @@ class MailClient(object):
         """
         #self._connection = poplib.POP3_SSL('pop.gmail.com', 995)
         self._connection = poplib.POP3(self._server)
-        # TODO récupérer le niveau de debug du logger pour paramétrer le
-        # debuglevel ici?
         #self._connection.set_debuglevel(1)
         self._connection.user(self._user)
         if self._passwd is None:
