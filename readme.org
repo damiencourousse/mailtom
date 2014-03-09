@@ -1,3 +1,5 @@
+#+EXPORT_TITLE: mailtom
+
 * Overview
 
 mailtom reads an email box and process its contents to a text output suitable for org-mode.
@@ -5,6 +7,18 @@ Each email consists in one task that will enter into your org-mode tasks.
 
 The tool is configured with a simple configuration file.
 An configuration example is provided: example.cfg.
+* Install
+** dependencies
+=mailtom= is known to work with =python-2.7=.
+
+** Installation process
+To install =mailtom= locally, run:
+
+#+BEGIN_SRC bash
+$ python setup install --user
+#+END_SRC
+
+And add =$HOME/.local/bin= to your =PATH= environment variable.
 
 * Configuration file
 

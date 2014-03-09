@@ -10,17 +10,23 @@ Table of Contents
 ─────────────────
 
 1 Overview
-2 Configuration file
-3 program output
-4 mail format
-.. 4.1 email subject
-.. 4.2 email body
-.. 4.3 email attachments
-.. 4.4 Specifying contexts
-.. 4.5 date keywords
-.. 4.6 Specifying deadlines
-.. 4.7 Specifying scheduled dates
-5 example
+2 Install
+.. 2.1 dependencies
+.. 2.2 Installation process
+3 Configuration file
+4 program output
+5 mail format
+.. 5.1 email subject
+.. 5.2 email body
+.. 5.3 email attachments
+.. 5.4 Specifying contexts
+.. 5.5 date keywords
+.. 5.6 Specifying deadlines
+.. 5.7 Specifying scheduled dates
+6 example
+
+
+
 
 
 1 Overview
@@ -34,7 +40,28 @@ Table of Contents
   configuration example is provided: example.cfg.
 
 
-2 Configuration file
+2 Install
+═════════
+
+2.1 dependencies
+────────────────
+
+  `mailtom' is known to work with `python-2.7'.
+
+
+2.2 Installation process
+────────────────────────
+
+  To install `mailtom' locally, run:
+
+  ╭────
+  │ $ python setup install --user
+  ╰────
+
+  And add `$HOME/.local/bin' to your `PATH' environment variable.
+
+
+3 Configuration file
 ════════════════════
 
   By default, mailtom looks for a configuration file `.mailtom.cfg' in
@@ -49,7 +76,7 @@ Table of Contents
   settings are not available via command line options!
 
 
-3 program output
+4 program output
 ════════════════
 
   By default, mailtom outputs the processing results to `stdout'.  The
@@ -57,10 +84,10 @@ Table of Contents
   results to the specified file.
 
 
-4 mail format
+5 mail format
 ═════════════
 
-4.1 email subject
+5.1 email subject
 ─────────────────
 
   The email subject will constitute the header of the org-mode task.
@@ -69,20 +96,20 @@ Table of Contents
   or the org-mode task.
 
 
-4.2 email body
+5.2 email body
 ──────────────
 
   The email body is copied as is in the body of the org-mode task.
 
 
-4.3 email attachments
+5.3 email attachments
 ─────────────────────
 
   Email attachments are retrieved and copied to the attachment
   destination, specified in the configuration file.
 
 
-4.4 Specifying contexts
+5.4 Specifying contexts
 ───────────────────────
 
   A context is a word preceded by the '@' character.
@@ -91,7 +118,7 @@ Table of Contents
   ╰────
 
 
-4.5 date keywords
+5.5 date keywords
 ─────────────────
 
   Several date formats are supported:
@@ -101,7 +128,7 @@ Table of Contents
   • n weeks after the email's date: `+nw' [1]
 
 
-4.6 Specifying deadlines
+5.6 Specifying deadlines
 ────────────────────────
 
   A deadline is a date keyword preceded by the string "d:".
@@ -117,7 +144,7 @@ Table of Contents
   ╰────
 
 
-4.7 Specifying scheduled dates
+5.7 Specifying scheduled dates
 ──────────────────────────────
 
   A scheduled date is a date keyword preceded by the string "s:".
@@ -128,7 +155,7 @@ Table of Contents
   ╰────
 
 
-5 example
+6 example
 ═════════
 
   The following email message:
