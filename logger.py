@@ -45,25 +45,22 @@ def set_level(loglevel='info'):
         raise ValueError('Invalid log level: %s' % loglevel)
     logging.getLogger('').setLevel(numeric_level)
     console_h.setLevel(numeric_level)
-    print "new log level = %s" % loglevel
-    print "new log level = %d" % numeric_level
 
 
 def set_logfile(f):
     global file_h, fileformat, dateformat
-    print file_h
     if file_h is not None:
         file_h.flush()
         file_h.close()
     logging.getLogger('').removeHandler(file_h)
-    print " new logfile : %s" % f
     file_h = logging.FileHandler(filename=f)
     file_h.setFormatter(logging.Formatter(fileformat))
-    print logging.DEBUG
+
+    # FIXME don't know why I have to set both the log levels of the handler
+    # _and_ of the logger
     file_h.setLevel(logging.DEBUG)
     logging.getLogger('').addHandler(file_h)
     logging.getLogger('').setLevel(logging.DEBUG)
-    print " new logfile : done"
 
 # set up logging to file
 fileformat    = '%(asctime)s - %(levelname)-8s - %(module)s:%(funcName)s:%(lineno)d - %(message)s'
@@ -71,7 +68,6 @@ dateformat    = '%m-%d %H:%M'
 
 file_h = None
 set_logfile(LOG_FILE)
-print file_h
 
 # define a Handler which writes INFO messages or higher to the sys.stderr
 console_h = logging.StreamHandler()
