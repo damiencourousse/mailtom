@@ -24,6 +24,23 @@ def main():
     Error    ( "error msg    -- ceci est un test" )
     Critical ( "critical msg -- ceci est un test" )
 
+    print "========"
+
+    logger.set_logfile(path.join(getcwd(), "output.log"))
+    Debug    ( "debug msg    -- ceci est un test" )
+    Info     ( "info msg     -- ceci est un test" )
+    Warn     ( "warn msg     -- ceci est un test" )
+    Error    ( "error msg    -- ceci est un test" )
+    Critical ( "critical msg -- ceci est un test" )
+
+    print "========"
+
+    logger.set_level("warning")
+    Debug    ( "debug msg    -- ceci est un test" )
+    Info     ( "info msg     -- ceci est un test" )
+    Warn     ( "warn msg     -- ceci est un test" )
+    Error    ( "error msg    -- ceci est un test" )
+    Critical ( "critical msg -- ceci est un test" )
     print "main: END"
 
 if __name__ == '__main__':

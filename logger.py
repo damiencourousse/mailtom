@@ -39,29 +39,46 @@ def set_level(loglevel='info'):
     loglevel = {"debug", "info", warning", "error", "critical" }
     """
 
+    global console_h
     numeric_level = getattr(logging, loglevel.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError('Invalid log level: %s' % loglevel)
-    console.setLevel(level=numeric_level)
+    logging.getLogger('').setLevel(numeric_level)
+    console_h.setLevel(numeric_level)
+    print "new log level = %s" % loglevel
+    print "new log level = %d" % numeric_level
 
 
 def set_logfile(f):
-    pass
-
+    global file_h, fileformat, dateformat
+    print file_h
+    if file_h is not None:
+        file_h.flush()
+        file_h.close()
+    logging.getLogger('').removeHandler(file_h)
+    print " new logfile : %s" % f
+    file_h = logging.FileHandler(filename=f)
+    file_h.setFormatter(logging.Formatter(fileformat))
+    print logging.DEBUG
+    file_h.setLevel(logging.DEBUG)
+    logging.getLogger('').addHandler(file_h)
+    logging.getLogger('').setLevel(logging.DEBUG)
+    print " new logfile : done"
 
 # set up logging to file
-logging.basicConfig( level=logging.DEBUG
-                   , format='%(asctime)s - %(levelname)-8s - %(module)s:%(funcName)s:%(lineno)d - %(message)s'
-                   , datefmt='%m-%d %H:%M'
-                   , filename=LOG_FILE
-                   , filemode='a')
+fileformat    = '%(asctime)s - %(levelname)-8s - %(module)s:%(funcName)s:%(lineno)d - %(message)s'
+dateformat    = '%m-%d %H:%M'
+
+file_h = None
+set_logfile(LOG_FILE)
+print file_h
 
 # define a Handler which writes INFO messages or higher to the sys.stderr
-console = logging.StreamHandler()
-console.setLevel(logging.INFO)
-console.setFormatter(logging.Formatter('%(levelname)-8s: %(message)s'))
+console_h = logging.StreamHandler()
+console_h.setLevel(logging.INFO)
+console_h.setFormatter(logging.Formatter('%(levelname)-8s: %(message)s'))
 # add the handler to the root logger
-logging.getLogger('').addHandler(console)
+logging.getLogger('').addHandler(console_h)
 
 logger = logging.getLogger('')
 
