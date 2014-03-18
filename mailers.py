@@ -113,7 +113,9 @@ class MailClient(object):
             raw_message = response[1]
 
             str_message = email.message_from_string("\n".join(raw_message))
-            Debug(str_message)
+            print type(str_message)
+            debug_str = "\n".join((str(str_message).split('\n'))[0:30])
+            Debug(debug_str)
 
             # walk over the message contents
             atts = list()
