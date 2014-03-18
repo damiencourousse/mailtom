@@ -22,7 +22,6 @@ from setuptools import setup, find_packages
 #from ez_setup import use_setuptools
 #use_setuptools()
 
-default_version = '0.1'
 
 
 def determine_path():
@@ -38,13 +37,25 @@ def determine_path():
         sys.exit ()
 
 
+def determine_version():
+    """ invocate git describe in a shell run from the current directory
+    """
+    import subprocess
+    cmd = "git describe --tags"
+    res = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    version = res.stdout.read()
+    res.stdout.close()
+
+    return version
+
+
 # VERSION
 # version number
 # todo use git info
 try:
-    version = os.environ['VERSION'].strip()
+    version = determine_version()
 except KeyError:
-    version = default_version
+    version = 'unknown_version'
 
 
 setup( name             = 'mailtom'
@@ -65,3 +76,4 @@ setup( name             = 'mailtom'
      ,  py_modules       = ['actions', 'config', 'mailers', 'printers']
      ,  ext_modules      = []
     )
+
