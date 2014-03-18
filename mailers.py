@@ -119,9 +119,9 @@ class MailClient(object):
 
             # walk over the message contents
             atts = list()
+            mail = dict() # stores email contents; associates the content
+                            # parts with its type
             for part in str_message.walk():
-                mail = dict() # stores email contents; associates the content
-                              # parts with its type
                 attachments = list()
 
                 content = part.get_content_type()
