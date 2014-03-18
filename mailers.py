@@ -80,6 +80,7 @@ class MailClient(object):
         self._processors = {
                 'text/plain' : self.__process_text,
                 'text/html' : self.__process_text,
+                # __process_attachment shall not be present here: attachments are handled differently
                 }
 
     def fetch(self):
@@ -128,6 +129,7 @@ class MailClient(object):
                 Debug("  content type : %s" % content)
 
                 if part.get_content_maintype() == 'multipart':
+                    Debug("multipart : continue")
                     continue
 
                 processor = self._processors.get(content)
@@ -142,9 +144,9 @@ class MailClient(object):
                     atts.append(self.__process_attachment(part, email_no))
 
             body = u""
+            Debug("mail: %s" % mail)
             for k in mail.keys():
                 body += mail.get(k)
-
             Debug("list of attachments for mail #%d: %s" % (email_no, atts))
 
             subject =  getmailheader(str_message.get('Subject', ''))
@@ -162,20 +164,19 @@ class MailClient(object):
         return mails
 
     def __process_text(self, part, email_no):
+        Debug("processing text part for email %d" % email_no)
         try:
             payload = part.get_payload(decode=True).decode(part.get_content_charset())
-            Debug("\n=== mailToOrg debug info <START> ===\n")
             Debug("  charset = %s\n" % part.get_content_charset())
-            Debug("=== mailToOrg debug info <END> ===\n")
         except TypeError:
             Warn(part)
             Warn("Could not retrieve mail body for email %d." % email_no)
             payload = "<mail body is missing>"
 
-        #Info(payload)
         return payload
 
     def __process_attachment(self, part, email_no):
+        Debug("processing attachment for email %d" % email_no)
         filename = part.get_filename()
         if not(filename):
             filename = "attachment.txt"
