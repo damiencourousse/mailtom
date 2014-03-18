@@ -41,12 +41,7 @@ def determine_version():
     """ invocate git describe in a shell run from the current directory
     """
     import subprocess
-    cmd = "git describe --tags"
-    res = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
-    version = res.stdout.read()
-    res.stdout.close()
-
-    return version
+    return subprocess.check_output(["git", "describe", "--tags"]).rstrip('\n')
 
 
 # VERSION
