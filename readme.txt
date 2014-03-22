@@ -14,16 +14,19 @@ Table of Contents
 .. 2.1 dependencies
 .. 2.2 Installation process
 3 Configuration file
-4 program output
-5 mail format
-.. 5.1 email subject
-.. 5.2 email body
-.. 5.3 email attachments
-.. 5.4 Specifying contexts
-.. 5.5 date keywords
-.. 5.6 Specifying deadlines
-.. 5.7 Specifying scheduled dates
-6 example
+4 Program output
+.. 4.1 command-line configuration
+.. 4.2 file configuration
+5 Email settings
+6 Email format
+.. 6.1 email subject
+.. 6.2 email body
+.. 6.3 email attachments
+.. 6.4 Specifying contexts
+.. 6.5 date keywords
+.. 6.6 Specifying deadlines
+.. 6.7 Specifying scheduled dates
+7 example
 
 
 
@@ -76,18 +79,46 @@ Table of Contents
   settings are not available via command line options!
 
 
-4 program output
+4 Program output
 ════════════════
 
-  By default, mailtom outputs the processing results to `stdout'.  The
-  command line `-o' // `--output' tells mailtom to append the processing
-  results to the specified file.
+  By default, mailtom outputs the processing results to `stdout'.
 
 
-5 mail format
-═════════════
+4.1 command-line configuration
+──────────────────────────────
 
-5.1 email subject
+  The command line `-o' // `--output' tells mailtom to append the
+  processing results to the specified file.
+
+
+4.2 file configuration
+──────────────────────
+
+  In the section `global': parameter `output'.
+
+
+5 Email settings
+════════════════
+
+  Email settings are defined in the `mail' section of the configuration
+  file:
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   param name    default value  use                                                     
+  ──────────────────────────────────────────────────────────────────────────────────────
+   `server'      `localhost'    name of the email server                                
+   `user'        -              login used for connection to the email server           
+   `passwd'      -              login password, in clear text                           
+   `savedir'     `/tmp'         A path directory for saving email attachments           
+   `delete_msg'  `False'        If true, mailtom deletes the email read from the server 
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+6 Email format
+══════════════
+
+6.1 email subject
 ─────────────────
 
   The email subject will constitute the header of the org-mode task.
@@ -96,20 +127,20 @@ Table of Contents
   or the org-mode task.
 
 
-5.2 email body
+6.2 email body
 ──────────────
 
   The email body is copied as is in the body of the org-mode task.
 
 
-5.3 email attachments
+6.3 email attachments
 ─────────────────────
 
   Email attachments are retrieved and copied to the attachment
   destination, specified in the configuration file.
 
 
-5.4 Specifying contexts
+6.4 Specifying contexts
 ───────────────────────
 
   A context is a word preceded by the '@' character.
@@ -118,7 +149,7 @@ Table of Contents
   ╰────
 
 
-5.5 date keywords
+6.5 date keywords
 ─────────────────
 
   Several date formats are supported:
@@ -128,7 +159,7 @@ Table of Contents
   • n weeks after the email's date: `+nw' [1]
 
 
-5.6 Specifying deadlines
+6.6 Specifying deadlines
 ────────────────────────
 
   A deadline is a date keyword preceded by the string "d:".
@@ -144,7 +175,7 @@ Table of Contents
   ╰────
 
 
-5.7 Specifying scheduled dates
+6.7 Specifying scheduled dates
 ──────────────────────────────
 
   A scheduled date is a date keyword preceded by the string "s:".
@@ -155,7 +186,7 @@ Table of Contents
   ╰────
 
 
-6 example
+7 example
 ═════════
 
   The following email message:

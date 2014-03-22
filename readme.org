@@ -31,12 +31,35 @@ $ ./mailtom.py -c example.cfg
 The command line options always take precedence over the settings of the configuration file.
 However, currently some configuration settings are not available via command line options!
 
-* program output
+* Program output
 
 By default, mailtom outputs the processing results to =stdout=.
-The command line =-o= // =--output= tells mailtom to append the processing results to the specified file.
 
-* mail format
+** command-line configuration
+
+The command line =-o= // =--output= tells mailtom to append the
+processing results to the specified file.
+
+** file configuration
+
+In the section =global=: parameter =output=.
+
+* Email settings
+
+Email settings are defined in the =mail= section of the configuration
+file:
+
+| param name   | default value | use                                                     |
+|--------------+---------------+---------------------------------------------------------|
+| =server=     | =localhost=   | name of the email server                                |
+| =user=       | -             | login used for connection to the email server           |
+| =passwd=     | -             | login password, in clear text                           |
+| =savedir=    | =/tmp=        | A path directory for saving email attachments           |
+| =delete_msg= | =False=       | If true, mailtom deletes the email read from the server |
+
+
+
+* Email format
 ** email subject
 The email subject will constitute the header of the org-mode task.
 Contexts, deadlines and scheduled dates found in the email subject are removed from the subject, but the information is added to the metadata or the org-mode task.
