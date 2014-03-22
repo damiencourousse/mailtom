@@ -23,9 +23,10 @@ Table of Contents
 .. 6.2 email body
 .. 6.3 email attachments
 .. 6.4 Specifying contexts
-.. 6.5 date keywords
-.. 6.6 Specifying deadlines
-.. 6.7 Specifying scheduled dates
+.. 6.5 Dates
+..... 6.5.1 Date keywords
+..... 6.5.2 Specifying deadlines
+..... 6.5.3 Specifying scheduled dates
 7 example
 
 
@@ -149,18 +150,27 @@ Table of Contents
   ╰────
 
 
-6.5 date keywords
-─────────────────
+6.5 Dates
+─────────
+
+6.5.1 Date keywords
+╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
 
   Several date formats are supported:
   • date format with 8 digits, as follows: `yyyymmdd'
   • date format with 6 digits, as follows: `yymmdd'
+  • date format with 3 or 4 digits, as follows: `mmdd'. In this case,
+    the month string `mm' is /always/ considered to be 2-digits long.
+  • date format with 1 or 2 digits, as follows: `dd'
   • n days after the email's date: `+n' or `+nd' [1]
   • n weeks after the email's date: `+nw' [1]
 
+  The date specified with the keywords `mmdd' and `dd' are computed from
+  the today's year, and today's month for `dd'.
 
-6.6 Specifying deadlines
-────────────────────────
+
+6.5.2 Specifying deadlines
+╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
 
   A deadline is a date keyword preceded by the string "d:".
 
@@ -174,9 +184,13 @@ Table of Contents
   │ d:+2
   ╰────
 
+  If today is march the 22nd, 2014, `d:25' will specify a deadline for
+  the 25th of the same month, i.e. March; `d:03' will /also/ speficy a
+  deadline for the same month, even if the deadline is already passed.
 
-6.7 Specifying scheduled dates
-──────────────────────────────
+
+6.5.3 Specifying scheduled dates
+╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
 
   A scheduled date is a date keyword preceded by the string "s:".
 

@@ -15,10 +15,12 @@ class MailedAction(object):
                 , attachment_list = None
                 , date = None
                 ):
-        self._known_dl = { 'full8' : self.__process_dl_full8
-                         , 'full6' : self.__process_dl_full6
-                         , 'plus'  : self.__process_dl_plus
-                         , 'weeks' : self.__process_dl_weeks
+        self._known_dl = { 'yyyymmdd' : self.__process_dl_yyyymmdd
+                         , 'yymmdd'   : self.__process_dl_yymmdd
+                         , 'mmdd'     : self.__process_dl_mmdd
+                         , 'dd'       : self.__process_dl_dd
+                         , 'plus'     : self.__process_dl_plus
+                         , 'weeks'    : self.__process_dl_weeks
                          }
         self._subject     = subject
         self._body        = body
@@ -29,10 +31,12 @@ class MailedAction(object):
         # as context keywords
         self._ptn_ctx     = re.compile(r" (@\w+)", re.VERBOSE)
 
-        dates_regexes = [ r"(?P<full8>\d{8})"    # 8 digits: yyyymmdd
-                        , r"(?P<full6>\d{6})"    # 6 digits: yymmdd
-                        , r"\+(?P<weeks>\d+)w"   # n weeks from now
-                        , r"\+(?P<plus>\d+)d?"   # n days from now
+        dates_regexes = [ r"(?P<yyyymmdd>\d{8})"  # 8 digits: yyyymmdd
+                        , r"(?P<yymmdd>\d{6})"    # 6 digits: yymmdd
+                        , r"(?P<mmdd>\d{3,4})"    # 3-4 digits: mmdd
+                        , r"(?P<dd>\d{1,2})"      # 1-2 digits: dd
+                        , r"\+(?P<weeks>\d+)w"    # n weeks from now
+                        , r"\+(?P<plus>\d+)d?"    # n days from now
                         ]
         self._ptn_dl = re.compile(r"|".join([r"d:"+d for d in dates_regexes]), re.VERBOSE)
         self._ptn_sl = re.compile(r"|".join([r"s:"+d for d in dates_regexes]), re.VERBOSE)
@@ -67,7 +71,7 @@ class MailedAction(object):
     def date(self):
         """ returns a datetime object
         .
-        The current implementation of date() uses a workaround,
+        Workaround here:
         because the %z directive of datetime is not recognized:
         http://bugs.python.org/issue6641
         http://www.beyondlinux.com/2012/02/06/how-to-convert-string-with-timezone-info-to-date-in-python/
@@ -93,17 +97,34 @@ class MailedAction(object):
             Debug(" no pattern match found for: %s" % self._subject)
             return None
 
-    def __process_dl_full8(self, date):
+    def __process_dl_yyyymmdd(self, date):
         """
-        returns a datetime object according to the date8 pattern matching
+        returns a datetime object according to the yyyymmdd pattern matching
         """
         return datetime.datetime.strptime(date, '%Y%m%d')
 
-    def __process_dl_full6(self, date):
+    def __process_dl_yymmdd(self, date):
         """
-        returns a datetime object according to the date6 pattern matching
+        returns a datetime object according to the yymmdd pattern matching
         """
         return datetime.datetime.strptime(date, '%y%m%d')
+
+    def __process_dl_mmdd(self, date):
+        """
+        returns a datetime object according to the mmdd pattern matching
+        """
+        thisy = datetime.datetime.today().year
+        d = datetime.datetime.strptime(date, '%m%d')
+        return datetime.date(thisy, d.month, d.day)
+
+    def __process_dl_dd(self, date):
+        """
+        returns a datetime object according to the mmdd pattern matching
+        """
+        thisy = datetime.datetime.today().year
+        thism = datetime.datetime.today().month
+        day   = datetime.datetime.strptime(date, '%d').day
+        return datetime.date(thisy, thism, day)
 
     def __process_dl_plus(self, date):
         """
@@ -141,7 +162,35 @@ def MailedMain():
     a._subject = "task description"
     print a.context()
     print "################################"
-    a._subject = "deadline description d:140303"
+    a._subject = "deadline description d:20140302"
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
+    a._subject = "deadline description d:140302"
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
+    a._subject = "deadline description d:0302"
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
+    a._subject = "deadline description d:032"
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
+    a._subject = "deadline description s:032"
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
+    a._subject = "deadline description d:02"
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
+    a._subject = "deadline description d:2"
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
+    a._subject = "deadline description s:02"
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
@@ -149,7 +198,7 @@ def MailedMain():
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
-    a._subject = "deadline 2014, march the 3rd d:20140303"
+    a._subject = "deadline 2014, march the 3rd d:20140302"
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"

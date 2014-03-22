@@ -29,11 +29,11 @@ class MailToOrg:
 
         printer = printers.MailToOrgMode()
 
-        # open the destination file if requested, else use stdout
+        # open the output file if requested, else use stdout
         output = config.read_param(cfg, 'global', 'output')
         olist = [options.output, output, stdout]
         o = next(item for item in olist if item is not None)
-        Debug("Results are push to the output : %s" % o)
+        Debug("Results are pushed to the output: %s" % o)
         f = open(o, 'a')
 
         # process mails
