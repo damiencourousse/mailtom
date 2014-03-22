@@ -8,30 +8,11 @@ import poplib
 
 from actions import MailedAction
 from tools.logger import Debug, Info, Warn, Error
+from config import read_param
 
-def read_fetch_mail_config(config_file, param, default=None,
-        method=ConfigParser.SafeConfigParser.get):
-    """
-    config_file is assumed to be a valid file
-    .
-    returns: an instance of the SafeConfigParser clas from ConfigParser
-    """
-    config = ConfigParser.SafeConfigParser()
-    config.read(config_file)
-
-    try:
-        res = method(config, 'fetch_mail', param)
-    except ConfigParser.NoOptionError:
-        if default is None:
-            raise ValueError(
-"""Missing parameter '%s' in the configuration file %s".
-Could not continue with a default value""" % (param, config_file))
-        else:
-            res = default
-
-    Debug(" configuration file : %s" % (config_file))
-    Debug(" %s             : %s" % (param, res))
-    return res
+DEFAULT_SERVER  = 'localhost'
+DEFAULT_PORT    = 110
+DEFAULT_ATT_DIR = '/tmp'
 
 
 class Mail(object):
@@ -60,21 +41,25 @@ class Mail(object):
 
 class MailClient(object):
     def __init__(self, config_file):
-
-        self._server  = read_fetch_mail_config(config_file, 'server', 'localhost')
-        self._port    = read_fetch_mail_config(config_file, 'port', 110)
-        self._user    = read_fetch_mail_config(config_file, 'user', getpass.getuser())
+        self._server  = self.read_mail_config(config_file,
+                'server', DEFAULT_SERVER)
+        self._port    = self.read_mail_config(config_file,
+                'port', DEFAULT_PORT)
+        self._user    = self.read_mail_config(config_file,
+                'user', getpass.getuser())
 
         # self._passwd: do not use getpass.getpass() as the default value,
         # because getpass() would be evaluated, i.e. the user is asked for a
         # password even if there is a valid line in the configuration file.
-        self._passwd  = read_fetch_mail_config(config_file, 'passwd', None)
+        self._passwd  = self.read_mail_config(config_file,
+                'passwd', None)
 
-        self._savedir = read_fetch_mail_config(config_file, 'savedir', '/tmp')
+        self._savedir = self.read_mail_config(config_file,
+                'savedir', DEFAULT_ATT_DIR)
 
         # By default, leaves emails on the server
-        self._delete  = read_fetch_mail_config(config_file, 'delete_msg',
-                False, ConfigParser.SafeConfigParser.getboolean)
+        self._delete  = self.read_mail_config(config_file,
+                'delete_msg', False, ConfigParser.SafeConfigParser.getboolean)
 
         # methods that will process specific MIME contents
         self._processors = {
@@ -82,6 +67,11 @@ class MailClient(object):
                 'text/html' : self.__process_text,
                 # __process_attachment shall not be present here: attachments are handled differently
                 }
+
+    def read_mail_config(self, config_file, param, default=None,
+            method=ConfigParser.SafeConfigParser.get):
+        return read_param(config_file, 'mail', param, default, method)
+
 
     def fetch(self):
         """
@@ -215,11 +205,11 @@ def getmailheader(header_text, default="ascii"):
         return u"".join(headers)
 
 
-def fetch_test():
+def test():
     d=MailClient()
     d.fetch()
 
 
 if __name__ == '__main__':
-    fetch_test()
+    test()
 
