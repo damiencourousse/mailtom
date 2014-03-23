@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+#
 # Copyright (C) 2014 Damien Couroussé <damien.courousse@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,12 +17,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#from copy import copy
 import glob, os, sys
 from setuptools import setup, find_packages
-#from ez_setup import use_setuptools
-#use_setuptools()
-
 
 
 def determine_path():
@@ -53,9 +50,7 @@ def determine_version():
     return subprocess.check_output(["git", "describe", "--tags", "--abbrev=1"]).rstrip('\n')
 
 
-# VERSION
 # version number
-# todo use git info
 try:
     version = determine_version()
 except KeyError:
