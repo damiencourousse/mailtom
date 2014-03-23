@@ -77,7 +77,14 @@ class MailedAction(object):
         return s
 
     def body(self):
-        return self._body
+        """ return the email body
+        .
+        Filter out the end of the body, starting from the first signature found
+        Following Usenet Signature Convention in RFC 3676 (section 4.3)
+        https://tools.ietf.org/html/rfc3676#section-4.3
+        """
+        body, sep, sign = self._body.partition("-- \n")
+        return body
 
     def context(self):
         return self._ptn_ctx.findall(self._subject)
