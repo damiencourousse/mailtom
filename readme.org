@@ -11,7 +11,7 @@ An configuration example is provided: example.cfg.
 * Install
 ** dependencies
 
-=mailtom= is known to work with =python-2.7=. 
+=mailtom= is known to work with =python-2.7=.
 It also needs the html2text python module.
 
 #+BEGIN_SRC sh :exports results
@@ -35,7 +35,7 @@ ii  python-html2text                                    3.200.3-2               
 
 
 
- 
+
 
 ** Installation process
 To install =mailtom= locally, run:
@@ -108,7 +108,7 @@ A context is a word preceded by the '@' character.
 ** Dates
 *** Date keywords
 
-Several date formats are supported: 
+Several date formats are supported:
 - date format with 8 digits, as follows: =yyyymmdd=
 - date format with 6 digits, as follows: =yymmdd=
 - date format with 3 or 4 digits, as follows: =mmdd=. In this case,
@@ -123,7 +123,7 @@ the today's year, and today's month for =dd=.
 
 *** Specifying deadlines
 
-A deadline is a date keyword preceded by the string "d:". 
+A deadline is a date keyword preceded by the string "d:".
 
 For example, a deadline due to march the 25th, 2014:
 #+BEGIN_EXAMPLE
@@ -141,7 +141,7 @@ deadline for the same month, even if the deadline is already passed.
 
 *** Specifying scheduled dates
 
-A scheduled date is a date keyword preceded by the string "s:". 
+A scheduled date is a date keyword preceded by the string "s:".
 
 For example, to schedule a task within three weeks:
 #+BEGIN_EXAMPLE
@@ -160,7 +160,7 @@ Subject: s:+3w send a mail to Tom @work
 
 These are my notes for this important task!
 
--- 
+--
 [Citation aléatoire]
 "It would seem that you have no useful skill or talent whatsoever," he said.
 "Have you thought of going into teaching?"
@@ -177,8 +177,8 @@ will end into this org-mode task:
    :END:
     - Note taken on [2014-03-06 Mar. 22:17] \\
  These are my notes for this important task!
- 
- -- 
+
+ --
  [Citation aléatoire]
  "It would seem that you have no useful skill or talent whatsoever," he said.
  "Have you thought of going into teaching?"
@@ -186,7 +186,33 @@ will end into this org-mode task:
 #+END_EXAMPLE
 
 
+* legal stuff
 
+Most of the code is written by Damien Couroussé. (Please provide patches
+so that can change.)
+
+The code is covered by the GNU General Public License, version 3 or later.
+
+Copyright (C) 2014 Damien Couroussé
+
+This file is part of mailtom.
+
+mailtom is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+mailtom is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with mailtom.  If not, see <http://www.gnu.org/licenses/>.
+
+
+* footnotes
 
 [1] n is an integer number
+
 

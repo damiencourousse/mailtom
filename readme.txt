@@ -28,6 +28,8 @@ Table of Contents
 ..... 6.5.2 Specifying deadlines
 ..... 6.5.3 Specifying scheduled dates
 7 example
+8 legal stuff
+9 footnotes
 
 
 
@@ -224,7 +226,7 @@ Table of Contents
   │ 
   │ These are my notes for this important task!
   │ 
-  │ -- 
+  │ --
   │ [Citation aléatoire]
   │ "It would seem that you have no useful skill or talent whatsoever," he said.
   │ "Have you thought of going into teaching?"
@@ -242,12 +244,43 @@ Table of Contents
   │    - Note taken on [2014-03-06 Mar. 22:17] \\
   │ These are my notes for this important task!
   │ 
-  │ -- 
+  │ --
   │ [Citation aléatoire]
   │ "It would seem that you have no useful skill or talent whatsoever," he said.
   │ "Have you thought of going into teaching?"
   │ -+- Terry Pratchett, Mort -+-
   ╰────
+
+
+8 legal stuff
+═════════════
+
+  Most of the code is written by Damien Couroussé. (Please provide
+  patches so that can change.)
+
+  The code is covered by the GNU General Public License, version 3 or
+  later.
+
+  Copyright (C) 2014 Damien Couroussé
+
+  This file is part of mailtom.
+
+  mailtom is free software: you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by the
+  Free Software Foundation, either version 3 of the License, or (at your
+  option) any later version.
+
+  mailtom is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+  for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with mailtom.  If not, see [http://www.gnu.org/licenses/].
+
+
+9 footnotes
+═══════════
 
 
 
