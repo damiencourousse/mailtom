@@ -60,6 +60,20 @@ class MailedAction(object):
             # if deadlines are found in the mail subject, we also need to
             # filter out the 'd:' prefix
             s = re.sub(r"s:", "", s)
+
+        # filter out Re: and Fwd: strings
+        # ... most of the times, the Re and Fwd patterns are followed by a
+        # space character...
+
+        # standard prefixes: https://en.wikipedia.org/wiki/List_of_email_subject_abbreviations
+        subject_prefixes = [ 'Re: '   # filtering is applied case insensitive
+                           , 'Fwd: '
+                           , 'Fw: '
+                           , 'Fyi: '
+                           ]
+        for i in subject_prefixes:
+            s = re.sub(i, '', s, flags=re.I)
+
         return s
 
     def body(self):

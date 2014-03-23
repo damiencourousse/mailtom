@@ -64,6 +64,9 @@ file:
 The email subject will constitute the header of the org-mode task.
 Contexts, deadlines and scheduled dates found in the email subject are removed from the subject, but the information is added to the metadata or the org-mode task.
 
+Subject prefixes such as 'Re: ' or 'Fwd: ' are filtered out from the
+generated task header.
+
 ** email body
 The email body is copied as is in the body of the org-mode task.
 
