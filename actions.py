@@ -82,9 +82,16 @@ class MailedAction(object):
         Filter out the end of the body, starting from the first signature found
         Following Usenet Signature Convention in RFC 3676 (section 4.3)
         https://tools.ietf.org/html/rfc3676#section-4.3
+        .
+        If html is found, render plain text with the module html2text.
         """
-        body, sep, sign = self._body.partition("-- \n")
-        return body
+        b = self._body
+        if b.startswith("<html>"):
+            import html2text
+            b = html2text.html2text(b)
+
+        body, sep, sign = b.partition("\n-- \n")
+        return (body + "\n")
 
     def context(self):
         return self._ptn_ctx.findall(self._subject)

@@ -7,9 +7,35 @@ Each email consists in one task that will enter into your org-mode tasks.
 
 The tool is configured with a simple configuration file.
 An configuration example is provided: example.cfg.
+
 * Install
 ** dependencies
-=mailtom= is known to work with =python-2.7=.
+
+=mailtom= is known to work with =python-2.7=. 
+It also needs the html2text python module.
+
+#+BEGIN_SRC sh :exports results
+dpkg -l python | tail -n 1
+#+END_SRC
+
+#+results:
+: ii  python                                              2.7.5-5                            amd64        interactive high-level object-oriented language (default version)
+
+#+BEGIN_SRC sh :exports results
+dpkg -l python-html2text | tail -n 1
+#+END_SRC
+
+#+results:
+#+BEGIN_SRC org
+ii  python-html2text                                    3.200.3-2                          all          Python module for converting HTML to Markdown text
+#+END_SRC
+
+
+
+
+
+
+ 
 
 ** Installation process
 To install =mailtom= locally, run:

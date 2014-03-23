@@ -50,7 +50,16 @@ Table of Contents
 2.1 dependencies
 ────────────────
 
-  `mailtom' is known to work with `python-2.7'.
+  `mailtom' is known to work with `python-2.7'.  It also needs the
+  html2text python module.
+
+  ╭────
+  │ ii  python                                              2.7.5-5                            amd64        interactive high-level object-oriented language (default version)
+  ╰────
+
+  ╭────
+  │ ii  python-html2text                                    3.200.3-2                          all          Python module for converting HTML to Markdown text
+  ╰────
 
 
 2.2 Installation process
@@ -126,6 +135,9 @@ Table of Contents
   Contexts, deadlines and scheduled dates found in the email subject are
   removed from the subject, but the information is added to the metadata
   or the org-mode task.
+
+  Subject prefixes such as 'Re: ' or 'Fwd: ' are filtered out from the
+  generated task header.
 
 
 6.2 email body
