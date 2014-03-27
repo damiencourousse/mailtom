@@ -2,10 +2,6 @@ from logger import Info, Debug, Warn, Error, Critical
 import logger
 from os import path, environ, getcwd
 
-CFG_LIST = [ path.join(environ['HOME'], '.python_logging.cfg')
-           , path.join(getcwd(), "logging.cfg")
-           ]
-
 def main():
     print "main: START"
 
