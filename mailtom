@@ -10,14 +10,16 @@ import actions
 import printers
 
 import config
-from tools.logger import Debug, Info, Warn, Error
+import version
+from tools.logger import *
 
 DEFAULT_CFG = os.path.join(os.environ['HOME'], '.mailtom.cfg')
+LOG_CFG     = os.path.join(os.environ['HOME'], '.mailtom_logging.log')
 
 
 class MailToOrg:
     def __init__(self, options):
-        #Debug("config file : %s", options.file)
+        set_logfile(LOG_CFG)
 
         # look for a configuration file for gtdToMail - the default is $HOME/.mailtom.cfg
         cfg = config.find_config_file(options.config, DEFAULT_CFG)
@@ -57,8 +59,17 @@ def main():
             dest="output",
             type = "string",
             help="output file")
+    parser.add_option("-d", "--debug",
+            dest="debug",
+            default = False,
+            action="store_true",
+            help="print debug messages")
 
     (options, args) = parser.parse_args(args=None, values=None)
+
+    if options.debug is True:
+        set_level('debug')
+
     Debug( "... options : %s", options)
     Debug( "... args : %s", args)
 
