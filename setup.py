@@ -22,6 +22,8 @@
 import glob, os, sys
 from setuptools import setup, find_packages
 
+import version
+
 
 def determine_path():
     """Borrowed from wxglade.py"""
@@ -36,25 +38,9 @@ def determine_path():
         sys.exit ()
 
 
-def determine_version():
-    """ invocate git describe in a shell run from the current directory
-    .
-    this use of git describe will return a complete description of the release
-    version number :
-        $ git describe --tags
-        v0.1-2-gdd4e
-    means: 2 commits after v0.1, namely commit gdd4e
-    .
-    To force a shorter version including only the tag name, we must use
-    --abbrev=0
-    """
-    import subprocess
-    return subprocess.check_output(["git", "describe", "--tags", "--abbrev=1"]).rstrip('\n')
-
-
 # version number
 try:
-    version = determine_version()
+    version = version.version()
 except KeyError:
     version = 'unknown_version'
 
