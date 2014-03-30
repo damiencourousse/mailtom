@@ -1,13 +1,13 @@
-			   ━━━━━━━━━━━━━━━━━━
+			   __________________
+
 				 README
 
-
 			    Damien Couroussé
-			   ━━━━━━━━━━━━━━━━━━
+			   __________________
 
 
 Table of Contents
-─────────────────
+_________________
 
 1 Overview
 2 Install
@@ -36,55 +36,55 @@ Table of Contents
 
 
 1 Overview
-══════════
+==========
 
-  mailtom reads an email box and process its contents to a text output
-  suitable for org-mode.  Each email consists in one task that will
-  enter into your org-mode tasks.
+  `mailtom' reads an email box and processes its contents to a text
+  output suitable for org-mode.  Each email consists in one task that
+  will enter into your org-mode tasks.
 
   The tool is configured with a simple configuration file.  An
   configuration example is provided: example.cfg.
 
 
 2 Install
-═════════
+=========
 
 2.1 dependencies
-────────────────
+~~~~~~~~~~~~~~~~
 
   `mailtom' is known to work with `python-2.7'.  It also needs the
   html2text python module.
 
-  ╭────
-  │ ii  python                                              2.7.5-5                            amd64        interactive high-level object-oriented language (default version)
-  ╰────
+  ,----
+  | ii  python                                              2.7.5-5                            amd64        interactive high-level object-oriented language (default version)
+  `----
 
-  ╭────
-  │ ii  python-html2text                                    3.200.3-2                          all          Python module for converting HTML to Markdown text
-  ╰────
+  ,----
+  | ii  python-html2text                                    3.200.3-2                          all          Python module for converting HTML to Markdown text
+  `----
 
 
 2.2 Installation process
-────────────────────────
+~~~~~~~~~~~~~~~~~~~~~~~~
 
   To install `mailtom' locally, run:
 
-  ╭────
-  │ $ python setup install --user
-  ╰────
+  ,----
+  | $ python setup install --user
+  `----
 
   And add `$HOME/.local/bin' to your `PATH' environment variable.
 
 
 3 Configuration file
-════════════════════
+====================
 
-  By default, mailtom looks for a configuration file `.mailtom.cfg' in
+  By default, `mailtom' looks for a configuration file `.mailtom.cfg' in
   you `$HOME' directory.  To provide another path to the configuration
   file, use the `-c' // `--config' option:
-  ╭────
-  │ $ ./mailtom.py -c example.cfg
-  ╰────
+  ,----
+  | $ ./mailtom.py -c example.cfg
+  `----
 
   The command line options always take precedence over the settings of
   the configuration file.  However, currently some configuration
@@ -92,46 +92,44 @@ Table of Contents
 
 
 4 Program output
-════════════════
+================
 
-  By default, mailtom outputs the processing results to `stdout'.
+  By default, `mailtom' outputs the processing results to `stdout'.
 
 
 4.1 command-line configuration
-──────────────────────────────
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  The command line `-o' // `--output' tells mailtom to append the
+  The command line `-o' // `--output' tells `mailtom' to append the
   processing results to the specified file.
 
 
 4.2 file configuration
-──────────────────────
+~~~~~~~~~~~~~~~~~~~~~~
 
   In the section `global': parameter `output'.
 
 
 5 Email settings
-════════════════
+================
 
   Email settings are defined in the `mail' section of the configuration
   file:
 
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   param name    default value  use                                                     
-  ──────────────────────────────────────────────────────────────────────────────────────
-   `server'      `localhost'    name of the email server                                
-   `user'        -              login used for connection to the email server           
-   `passwd'      -              login password, in clear text                           
-   `savedir'     `/tmp'         A path directory for saving email attachments           
-   `delete_msg'  `False'        If true, mailtom deletes the email read from the server 
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   param name    default value  use                                                       
+  ----------------------------------------------------------------------------------------
+   `server'      `localhost'    name of the email server                                  
+   `user'        -              login used for connection to the email server             
+   `passwd'      -              login password, in clear text                             
+   `savedir'     `/tmp'         A path directory for saving email attachments             
+   `delete_msg'  `False'        If true, `mailtom' deletes the email read from the server 
 
 
 6 Email format
-══════════════
+==============
 
 6.1 email subject
-─────────────────
+~~~~~~~~~~~~~~~~~
 
   The email subject will constitute the header of the org-mode task.
   Contexts, deadlines and scheduled dates found in the email subject are
@@ -143,60 +141,60 @@ Table of Contents
 
 
 6.2 email body
-──────────────
+~~~~~~~~~~~~~~
 
   The email body is copied as is in the body of the org-mode task.
 
 
 6.3 email attachments
-─────────────────────
+~~~~~~~~~~~~~~~~~~~~~
 
   Email attachments are retrieved and copied to the attachment
   destination, specified in the configuration file.
 
 
 6.4 Specifying contexts
-───────────────────────
+~~~~~~~~~~~~~~~~~~~~~~~
 
   A context is a word preceded by the '@' character.
-  ╭────
-  │ @phone
-  ╰────
+  ,----
+  | @phone
+  `----
 
 
 6.5 Dates
-─────────
+~~~~~~~~~
 
 6.5.1 Date keywords
-╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
+-------------------
 
   Several date formats are supported:
-  • date format with 8 digits, as follows: `yyyymmdd'
-  • date format with 6 digits, as follows: `yymmdd'
-  • date format with 3 or 4 digits, as follows: `mmdd'. In this case,
+  - date format with 8 digits, as follows: `yyyymmdd'
+  - date format with 6 digits, as follows: `yymmdd'
+  - date format with 3 or 4 digits, as follows: `mmdd'. In this case,
     the month string `mm' is /always/ considered to be 2-digits long.
-  • date format with 1 or 2 digits, as follows: `dd'
-  • n days after the email's date: `+n' or `+nd' [1]
-  • n weeks after the email's date: `+nw' [1]
+  - date format with 1 or 2 digits, as follows: `dd'
+  - n days after the email's date: `+n' or `+nd' [1]
+  - n weeks after the email's date: `+nw' [1]
 
   The date specified with the keywords `mmdd' and `dd' are computed from
   the today's year, and today's month for `dd'.
 
 
 6.5.2 Specifying deadlines
-╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
+--------------------------
 
   A deadline is a date keyword preceded by the string "d:".
 
   For example, a deadline due to march the 25th, 2014:
-  ╭────
-  │ d:140325
-  ╰────
+  ,----
+  | d:140325
+  `----
 
   or within two days:
-  ╭────
-  │ d:+2
-  ╰────
+  ,----
+  | d:+2
+  `----
 
   If today is march the 22nd, 2014, `d:25' will specify a deadline for
   the 25th of the same month, i.e. March; `d:03' will /also/ speficy a
@@ -204,56 +202,56 @@ Table of Contents
 
 
 6.5.3 Specifying scheduled dates
-╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
+--------------------------------
 
   A scheduled date is a date keyword preceded by the string "s:".
 
   For example, to schedule a task within three weeks:
-  ╭────
-  │ s:+3w
-  ╰────
+  ,----
+  | s:+3w
+  `----
 
 
 7 example
-═════════
+=========
 
   The following email message:
 
-  ╭────
-  │ Date: Wed, 06 Mar 2014 22:17:25 +0100
-  │ (... data filtered out)
-  │ Subject: s:+3w send a mail to Tom @work
-  │ 
-  │ These are my notes for this important task!
-  │ 
-  │ --
-  │ [Citation aléatoire]
-  │ "It would seem that you have no useful skill or talent whatsoever," he said.
-  │ "Have you thought of going into teaching?"
-  │ -+- Terry Pratchett, Mort -+-
-  ╰────
+  ,----
+  | Date: Wed, 06 Mar 2014 22:17:25 +0100
+  | (... data filtered out)
+  | Subject: s:+3w send a mail to Tom @work
+  | 
+  | These are my notes for this important task!
+  | 
+  | --
+  | [Citation aléatoire]
+  | "It would seem that you have no useful skill or talent whatsoever," he said.
+  | "Have you thought of going into teaching?"
+  | -+- Terry Pratchett, Mort -+-
+  `----
 
   will end into this org-mode task:
 
-  ╭────
-  │ * INACTIVE  send a mail to Tom 					      :@work:
-  │   SCHEDULED: <2014-03-27 Mar.>
-  │   :PROPERTIES:
-  │   :CREATED: [2014-03-06 Mar. 22:17]
-  │   :END:
-  │    - Note taken on [2014-03-06 Mar. 22:17] \\
-  │ These are my notes for this important task!
-  │ 
-  │ --
-  │ [Citation aléatoire]
-  │ "It would seem that you have no useful skill or talent whatsoever," he said.
-  │ "Have you thought of going into teaching?"
-  │ -+- Terry Pratchett, Mort -+-
-  ╰────
+  ,----
+  | * INACTIVE  send a mail to Tom 					      :@work:
+  |   SCHEDULED: <2014-03-27 Mar.>
+  |   :PROPERTIES:
+  |   :CREATED: [2014-03-06 Mar. 22:17]
+  |   :END:
+  |    - Note taken on [2014-03-06 Mar. 22:17] \\
+  | These are my notes for this important task!
+  | 
+  | --
+  | [Citation aléatoire]
+  | "It would seem that you have no useful skill or talent whatsoever," he said.
+  | "Have you thought of going into teaching?"
+  | -+- Terry Pratchett, Mort -+-
+  `----
 
 
 8 legal stuff
-═════════════
+=============
 
   Most of the code is written by Damien Couroussé. (Please provide
   patches so that can change.)
@@ -280,11 +278,11 @@ Table of Contents
 
 
 9 footnotes
-═══════════
+===========
 
 
 
 Footnotes
-─────────
+_________
 
 [1] n is an integer number

@@ -2,7 +2,7 @@
 
 * Overview
 
-mailtom reads an email box and process its contents to a text output suitable for org-mode.
+=mailtom= reads an email box and processes its contents to a text output suitable for org-mode.
 Each email consists in one task that will enter into your org-mode tasks.
 
 The tool is configured with a simple configuration file.
@@ -48,7 +48,7 @@ And add =$HOME/.local/bin= to your =PATH= environment variable.
 
 * Configuration file
 
-By default, mailtom looks for a configuration file =.mailtom.cfg= in you =$HOME= directory.
+By default, =mailtom= looks for a configuration file =.mailtom.cfg= in you =$HOME= directory.
 To provide another path to the configuration file, use the =-c= // =--config= option:
 #+BEGIN_SRC bash
 $ ./mailtom.py -c example.cfg
@@ -59,11 +59,11 @@ However, currently some configuration settings are not available via command lin
 
 * Program output
 
-By default, mailtom outputs the processing results to =stdout=.
+By default, =mailtom= outputs the processing results to =stdout=.
 
 ** command-line configuration
 
-The command line =-o= // =--output= tells mailtom to append the
+The command line =-o= // =--output= tells =mailtom= to append the
 processing results to the specified file.
 
 ** file configuration
@@ -81,7 +81,7 @@ file:
 | =user=       | -             | login used for connection to the email server           |
 | =passwd=     | -             | login password, in clear text                           |
 | =savedir=    | =/tmp=        | A path directory for saving email attachments           |
-| =delete_msg= | =False=       | If true, mailtom deletes the email read from the server |
+| =delete_msg= | =False=       | If true, =mailtom= deletes the email read from the server |
 
 
 
