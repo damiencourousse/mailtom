@@ -60,7 +60,11 @@ setup( name             = 'mailtom'
      ,  platforms        = 'Cross Platform'
      ,  scripts          = ['mailtom']
      ,  packages         = find_packages()
-     ,  py_modules       = ['actions', 'config', 'mailers', 'printers']
+     ,  py_modules       = [ 'actions'
+                           , 'config'
+                           , 'mailers'
+                           , 'printers'
+                           , 'version']
      ,  ext_modules      = []
     )
 
