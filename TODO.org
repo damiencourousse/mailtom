@@ -1,1 +1,9 @@
 * TODO mailers.py: add support for SSL connections
+* TODO version number: how to automatically handle the version number from git tags, in all working cases?
+  e.g. when mailtom is installed, we no longer have access to git
+  info. The version string should be stored somewhere at build/install
+  time.  
+
+  Maybe using a file 'version.txt' that comes as a dependency of
+  mailtom?
+

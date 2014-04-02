@@ -45,6 +45,9 @@ _________________
   The tool is configured with a simple configuration file.  An
   configuration example is provided: example.cfg.
 
+  This document is the minimalist, provided as-is, documentation for
+  `mailtom' version `v0.2-1-ge923'.
+
 
 2 Install
 =========
