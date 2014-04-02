@@ -18,8 +18,7 @@
 # along with mailtom.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-
-def version(abbrev=False):
+def git_version(abbrev=False):
     """ invocate git describe in a shell run from the current directory
     .
     this use of git describe will return a complete description of the release
@@ -36,5 +35,24 @@ def version(abbrev=False):
         abbrev_str = "--abbrev=0"
     else:
         abbrev_str = "--abbrev=1"
-    return subprocess.check_output(["git", "describe", "--tags", abbrev_str]).rstrip('\n')
+    try:
+        with open('/dev/null', 'w') as devnull:
+            return subprocess.check_output( ["git", "describe", "--tags", abbrev_str]
+                                          , stderr=devnull
+                                          ).rstrip('\n')
+    except subprocess.CalledProcessError:
+        return None
+
+
+
+
+
+
+
+__version__ = '0.2'
+
+
+if git_version() != None:
+    __version__ = git_version()
+
 

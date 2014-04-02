@@ -37,34 +37,24 @@ def determine_path():
         print "There is no __file__ variable. Please contact the author."
         sys.exit ()
 
-
-# version number
-try:
-    version = version.version()
-except KeyError:
-    version = 'unknown_version'
-
-
 setup( name             = 'mailtom'
-     ,  description      = 'translates emails to org-mode tasks'
-     ,  long_description = """
-        mailtom is a tool for the creation of org-mode tasks from an email box.
-        The purpose is to fill automatically your GTD inbox from the contents
-        of a dedicated email box.
-        """
-     ,  install_requires = []
-     ,  license          = 'GPLv3'
-     ,  version          = version
-     ,  author           = 'Damien Couroussé'
-     ,  author_email     = 'damien.courousse@gmail.com'
-     ,  platforms        = 'Cross Platform'
-     ,  scripts          = ['mailtom']
-     ,  packages         = find_packages()
-     ,  py_modules       = [ 'actions'
-                           , 'config'
-                           , 'mailers'
-                           , 'printers'
-                           , 'version']
-     ,  ext_modules      = []
-    )
-
+     , description      = 'translates emails to org-mode tasks'
+     , long_description = """
+       mailtom is a tool for the creation of org-mode tasks from an email box.
+       The purpose is to fill automatically your GTD inbox from the contents
+       of a dedicated email box.
+       """
+     , install_requires = []
+     , license          = 'GPLv3'
+     , version          = version.git_version()
+     , author           = 'Damien Couroussé'
+     , author_email     = 'damien.courousse@gmail.com'
+     , platforms        = 'Cross Platform'
+     , scripts          = ['mailtom']
+     , packages         = find_packages()
+     , py_modules       = [ 'actions'
+                          , 'config'
+                          , 'mailers'
+                          , 'printers'
+                          , 'version' ]
+     )
