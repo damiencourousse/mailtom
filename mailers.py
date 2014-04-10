@@ -144,10 +144,12 @@ class MailClient(object):
 
                 # process part contents
                 if processor is not None:
-                    if mail.get(content) is not None:
-                        raise ValueError("""I have already stored contents of type %s.
-                                            I need a new implementation!!! """ % content)
-                    mail[content] = processor(part, email_no)
+                    m = mail.get(content)
+                    if m is None:
+                        mail[content] = processor(part, email_no)
+                    else:
+                        m = "\n".join([m, processor(part, email_no)])
+                        mail[content] = m
                 else:
                     atts.append(self.__process_attachment(part, email_no))
 

@@ -6,4 +6,4 @@
 
   Maybe using a file 'version.txt' that comes as a dependency of
   mailtom?
-
+* TODO eml attachments: currently they are concatenated to the email body, but are also saved as file attachments. better way to process these attachments ?
