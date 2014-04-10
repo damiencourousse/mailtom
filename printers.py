@@ -64,7 +64,7 @@ class MailToOrgMode(object):
         if mail.attachments() != []:
             msg += u"   - Fichiers joints: \n"
             for a in mail.attachments():
-                msg += u"     file:" + a + "\n"
+                msg += u"     [[file:" + a + "]]\n"
         msg += mail.body()
         msg += u"\n"
 
