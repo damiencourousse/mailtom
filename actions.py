@@ -85,9 +85,13 @@ class MailedAction(object):
 
         # standard prefixes: https://en.wikipedia.org/wiki/List_of_email_subject_abbreviations
         subject_prefixes = [ 'Re: '   # filtering is applied case insensitive
+                           , 'Re:'
                            , 'Fwd: '
+                           , 'Fwd:'
                            , 'Fw: '
+                           , 'Fw:'
                            , 'Fyi: '
+                           , 'Fyi:'
                            ]
         for i in subject_prefixes:
             s = re.sub(i, '', s, flags=re.I)
