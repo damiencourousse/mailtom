@@ -18,6 +18,12 @@
 # along with mailtom.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+
+
+import os
+VERSION_FILE = os.path.join(os.path.dirname(__file__), 'version.txt')
+
+
 def git_version(abbrev=False):
     """ invocate git describe in a shell run from the current directory
     .
@@ -43,16 +49,13 @@ def git_version(abbrev=False):
     except subprocess.CalledProcessError:
         return None
 
+def save_version():
+    with open(VERSION_FILE, 'w') as f:
+        f.write("%s\n" % git_version())
 
+def read_version():
+    with open(VERSION_FILE, 'r') as f:
+        return f.read().rstrip('\n')
 
-
-
-
-
-__version__ = '0.2'
-
-
-if git_version() != None:
-    __version__ = git_version()
 
 

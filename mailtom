@@ -50,7 +50,7 @@ class MailToOrg:
 
 def main():
     Debug("Debug output enabled.")
-    parser = OptionParser(version=version.__version__)
+    parser = OptionParser(version=version.read_version())
     parser.add_option("-c", "--config",
             dest="config",
             type = "string",

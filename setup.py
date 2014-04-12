@@ -21,6 +21,7 @@
 
 import glob, os, sys
 from setuptools import setup, find_packages
+from distutils.command.build import build
 
 import version
 
@@ -37,6 +38,14 @@ def determine_path():
         print "There is no __file__ variable. Please contact the author."
         sys.exit ()
 
+
+class BuildVersion(build):
+
+    def run(self):
+        build.run(self)
+        version.save_version()
+
+
 setup( name             = 'mailtom'
      , description      = 'translates emails to org-mode tasks'
      , long_description = """
@@ -52,9 +61,11 @@ setup( name             = 'mailtom'
      , platforms        = 'Cross Platform'
      , scripts          = ['mailtom']
      , packages         = find_packages()
+     , data_files       = [('version.txt')]
      , py_modules       = [ 'actions'
                           , 'config'
                           , 'mailers'
                           , 'printers'
                           , 'version' ]
+      , cmdclass        = { 'build': BuildVersion }
      )
