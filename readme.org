@@ -194,7 +194,16 @@ will end into this org-mode task:
  -+- Terry Pratchett, Mort -+-
 #+END_EXAMPLE
 
+* development notes
+** pytools git-subtree
+   
+Updatin the subtree:
 
+#+BEGIN_EXAMPLE
+$ git fetch pytools
+$ git subtree pull --prefix mailtomlib/pytools -m '[subtree] update pytools' pytools master
+#+END_EXAMPLE
+   
 * legal stuff
 
 Most of the code is written by Damien Couroussé. (Please provide patches

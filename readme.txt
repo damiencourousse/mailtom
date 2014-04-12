@@ -28,8 +28,10 @@ Table of Contents
 ..... 6.5.2 Specifying deadlines
 ..... 6.5.3 Specifying scheduled dates
 7 example
-8 legal stuff
-9 footnotes
+8 development notes
+.. 8.1 pytools git-subtree
+9 legal stuff
+10 footnotes
 
 
 
@@ -46,7 +48,7 @@ Table of Contents
   configuration example is provided: example.cfg.
 
   This document is the minimalist, provided as-is, documentation for
-  `mailtom' version `v0.2-3-g9bff'.
+  `mailtom' version `nil'.
 
 
 2 Install
@@ -255,7 +257,21 @@ Table of Contents
   ╰────
 
 
-8 legal stuff
+8 development notes
+═══════════════════
+
+8.1 pytools git-subtree
+───────────────────────
+
+  Updatin the subtree:
+
+  ╭────
+  │ $ git fetch pytools
+  │ $ git subtree pull --prefix mailtomlib/pytools -m '[subtree] update pytools' pytools master
+  ╰────
+
+
+9 legal stuff
 ═════════════
 
   Most of the code is written by Damien Couroussé. (Please provide
@@ -282,8 +298,8 @@ Table of Contents
   along with mailtom.  If not, see [http://www.gnu.org/licenses/].
 
 
-9 footnotes
-═══════════
+10 footnotes
+════════════
 
 
 
