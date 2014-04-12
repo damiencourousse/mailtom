@@ -4,7 +4,7 @@
     Modules and plugins that wish to use logging should import one of the Info,
     Warn, Debug, Error, Critical objects:
 
-    from tools.logger import Info
+    from pytools.logger import Info
 
     ...and target it with debug or info messages:
 
