@@ -22,7 +22,7 @@
 import ConfigParser
 
 from os import path, environ
-from tools.logger import Debug, Info, Warn, Error
+from pytools.logger import Debug, Info, Warn, Error
 
 DEFAULT_CFG = path.join(environ['HOME'], '.mailtom.cfg')
 

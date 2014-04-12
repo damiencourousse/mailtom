@@ -21,7 +21,7 @@
 
 import ConfigParser
 import mailers
-from tools.logger import Debug, Info, Error
+from pytools.logger import Debug, Info, Error
 
 
 class MailToOrgMode(object):

@@ -26,7 +26,7 @@ import os
 import poplib
 
 from actions import MailedAction
-from tools.logger import Debug, Info, Warn, Error
+from pytools.logger import Debug, Info, Warn, Error
 from config import read_param
 
 DEFAULT_SERVER  = 'localhost'

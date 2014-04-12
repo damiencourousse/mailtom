@@ -23,7 +23,7 @@ import re
 import datetime
 import email.utils
 
-from tools.logger import Debug, Info, Warn, Error
+from pytools.logger import Debug, Info, Warn, Error
 
 
 class MailedAction(object):
