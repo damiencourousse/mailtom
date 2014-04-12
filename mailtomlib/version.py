@@ -21,7 +21,7 @@
 
 
 import os
-VERSION_FILE = os.path.join(os.path.dirname(__file__), 'version.txt')
+VERSION_FILE = os.path.join(os.path.dirname(__file__), 'data', 'version.txt')
 
 
 def git_version(abbrev=False):

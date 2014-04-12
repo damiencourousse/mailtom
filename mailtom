@@ -5,12 +5,12 @@ import os
 from sys import stdout
 from optparse import OptionParser
 
-import mailers
-import actions
-import printers
+import mailtomlib.actions as actions
+import mailtomlib.config as config
+import mailtomlib.mailers as mailers
+import mailtomlib.printers as printers
+import mailtomlib.version as version
 
-import config
-import version
 from tools.logger import *
 
 DEFAULT_CFG = os.path.join(os.environ['HOME'], '.mailtom.cfg')

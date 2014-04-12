@@ -21,17 +21,17 @@
 
 import glob, os, sys
 from setuptools import setup, find_packages
-from distutils.command.build import build
+from distutils.command.install import install
 
-import version
+import mailtomlib.version as version
 
+print find_packages()
 
-class BuildVersion(build):
+class InstallVersion(install):
 
     def run(self):
-        build.run(self)
         version.save_version()
-
+        install.run(self)
 
 setup( name             = 'mailtom'
      , description      = 'translates emails to org-mode tasks'
@@ -47,12 +47,8 @@ setup( name             = 'mailtom'
      , author_email     = 'damien.courousse@gmail.com'
      , platforms        = 'Cross Platform'
      , scripts          = ['mailtom']
-     , packages         = find_packages()
-     , data_files       = [('version.txt')]
-     , py_modules       = [ 'actions'
-                          , 'config'
-                          , 'mailers'
-                          , 'printers'
-                          , 'version' ]
-      , cmdclass        = { 'build': BuildVersion }
+     , packages         = ['mailtomlib', 'tools']
+     , package_data     = {'mailtomlib': ['data/version.txt']}
+     , cmdclass         = { 'install': InstallVersion
+                          }
      )
