@@ -36,9 +36,11 @@ class InstallVersion(install):
 setup( name             = 'mailtom'
      , description      = 'translates emails to org-mode tasks'
      , long_description = """
-       mailtom is a tool for the creation of org-mode tasks from an email box.
-       The purpose is to fill automatically your GTD inbox from the contents
-       of a dedicated email box.
+       mailtom creates org-mode tasks from the contents of an email box.
+       Considering that email is one of the most accessible and spread
+       communication tools, and that most of daily information land in email
+       boxes, the purpose of mailtom is to easily create GTD tasks from emails.
+       mailtom translates email contents and headers to org-mode tasks.
        """
      , install_requires = []
      , license          = 'GPLv3'
@@ -47,6 +49,7 @@ setup( name             = 'mailtom'
      , author_email     = 'damien.courousse@gmail.com'
      , platforms        = 'Cross Platform'
      , scripts          = ['mailtom']
+     # TODO mv tools -> mailtomlib/pytools
      , packages         = ['mailtomlib', 'tools']
      , package_data     = {'mailtomlib': ['data/version.txt']}
      , cmdclass         = { 'install': InstallVersion
