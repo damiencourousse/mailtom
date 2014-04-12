@@ -1,10 +1,30 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2014 Damien Couroussé <damien.courousse@gmail.com>
+#
+# This file is part of pytools.
+#
+# pytools is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# pytools is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with pytools.  If not, see <http://www.gnu.org/licenses/>.
+#
+
 """
     Reusable logging configuration.
 
     Modules and plugins that wish to use logging should import one of the Info,
     Warn, Debug, Error, Critical objects:
 
-    from tools.logger import Info
+    from pytools.logger import Info
 
     ...and target it with debug or info messages:
 
