@@ -33,12 +33,13 @@ class MailedAction(object):
                 , attachment_list = None
                 , date = None
                 ):
-        self._known_dl = { 'yyyymmdd' : self.__process_dl_yyyymmdd
-                         , 'yymmdd'   : self.__process_dl_yymmdd
-                         , 'mmdd'     : self.__process_dl_mmdd
-                         , 'dd'       : self.__process_dl_dd
-                         , 'plus'     : self.__process_dl_plus
-                         , 'weeks'    : self.__process_dl_weeks
+        self._known_dl = { 'yyyymmdd'  : self.__process_dl_yyyymmdd
+                         , 'yymmdd'    : self.__process_dl_yymmdd
+                         , 'mmdd'      : self.__process_dl_mmdd
+                         , 'mmslashdd' : self.__process_dl_mmslashdd
+                         , 'dd'        : self.__process_dl_dd
+                         , 'plus'      : self.__process_dl_plus
+                         , 'weeks'     : self.__process_dl_weeks
                          }
         self._subject     = subject
         self._body        = body
@@ -49,12 +50,13 @@ class MailedAction(object):
         # as context keywords
         self._ptn_ctx     = re.compile(r" (@\w+)", re.VERBOSE)
 
-        dates_regexes = [ r"(?P<yyyymmdd>\d{8})"  # 8 digits: yyyymmdd
-                        , r"(?P<yymmdd>\d{6})"    # 6 digits: yymmdd
-                        , r"(?P<mmdd>\d{3,4})"    # 3-4 digits: mmdd
-                        , r"(?P<dd>\d{1,2})"      # 1-2 digits: dd
-                        , r"\+(?P<weeks>\d+)w"    # n weeks from now
-                        , r"\+(?P<plus>\d+)d?"    # n days from now
+        dates_regexes = [ r"(?P<yyyymmdd>\d{8})"             # 8 digits: yyyymmdd
+                        , r"(?P<yymmdd>\d{6})"               # 6 digits: yymmdd
+                        , r"(?P<mmdd>\d{3,4})"               # 3-4 digits: mmdd
+                        , r"(?P<mmslashdd>\d{1,2}\/\d{1,2})" # mm/dd
+                        , r"(?P<dd>\d{1,2})"                 # 1-2 digits: dd
+                        , r"\+(?P<weeks>\d+)w"               # n weeks from now
+                        , r"\+(?P<plus>\d+)d?"               # n days from now
                         ]
         self._ptn_dl = re.compile(r"|".join([r"d:"+d for d in dates_regexes]), re.VERBOSE)
         self._ptn_sl = re.compile(r"|".join([r"s:"+d for d in dates_regexes]), re.VERBOSE)
@@ -167,6 +169,16 @@ class MailedAction(object):
         d = datetime.datetime.strptime(date, '%m%d')
         return datetime.date(thisy, d.month, d.day)
 
+    def __process_dl_mmslashdd(self, date):
+        """
+        returns a datetime object according to the mmdd pattern matching
+        """
+        l = date.split('/')
+        d = int(l.pop())
+        m = int(l.pop())
+        thisy = datetime.datetime.today().year
+        return datetime.date(thisy, m, d)
+
     def __process_dl_dd(self, date):
         """
         returns a datetime object according to the mmdd pattern matching
@@ -225,6 +237,14 @@ def MailedMain():
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "deadline description d:032"
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
+    a._subject = "deadline description d:04/05"
+    print "> deadline: %s" % a.deadline()
+    print "> scheduled: %s" % a.scheduled()
+    print "################################"
+    a._subject = "deadline description d:04/5"
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
