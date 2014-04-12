@@ -48,7 +48,7 @@ Table of Contents
   configuration example is provided: example.cfg.
 
   This document is the minimalist, provided as-is, documentation for
-  `mailtom' version `nil'.
+  `mailtom' version `v0.2-17-gf976'.
 
 
 2 Install

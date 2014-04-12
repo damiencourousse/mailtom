@@ -13,6 +13,9 @@ An configuration example is provided: example.cfg.
 ./mailtom --version
 #+END_SRC
 
+#+results: mailtom-version
+: v0.2-17-gf976
+
 This document is the minimalist, provided as-is, documentation for
 =mailtom= version call_mailtom-version().
 
