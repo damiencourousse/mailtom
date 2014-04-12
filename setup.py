@@ -49,7 +49,7 @@ setup( name             = 'mailtom'
      , author_email     = 'damien.courousse@gmail.com'
      , platforms        = 'Cross Platform'
      , scripts          = ['mailtom']
-     , packages         = ['mailtomlib']
+     , packages         = ['mailtomlib', 'mailtomlib/pytools']
      , package_data     = {'mailtomlib': ['data/version.txt']}
      , cmdclass         = { 'install': InstallVersion
                           }

@@ -1,0 +1,4 @@
+empty file: the directory mailtomlib/data is empty.
+
+This file forces the creation of this directory in the git repository.
+
