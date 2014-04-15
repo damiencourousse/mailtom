@@ -131,12 +131,12 @@ class MailedAction(object):
         return datetime.datetime(*email.utils.parsedate_tz(self._date)[:6])
 
     def deadline(self):
-        return self.__search_pattern(self._ptn_dl)
+        return self.__search_date_pattern(self._ptn_dl)
 
     def scheduled(self):
-        return self.__search_pattern(self._ptn_sl)
+        return self.__search_date_pattern(self._ptn_sl)
 
-    def __search_pattern(self, ptn):
+    def __search_date_pattern(self, ptn):
         try:
             for k, v in re.search(ptn, self._subject).groupdict().iteritems():
                 if v is not None:
