@@ -53,7 +53,7 @@ ii  python-html2text                                    3.200.3-2               
 To install =mailtom= locally, run:
 
 #+BEGIN_SRC bash
-$ python setup install --user
+$ python setup.py install --user
 #+END_SRC
 
 And add =$HOME/.local/bin= to your =PATH= environment variable.

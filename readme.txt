@@ -75,7 +75,7 @@ Table of Contents
   To install `mailtom' locally, run:
 
   ╭────
-  │ $ python setup install --user
+  │ $ python setup.py install --user
   ╰────
 
   And add `$HOME/.local/bin' to your `PATH' environment variable.
