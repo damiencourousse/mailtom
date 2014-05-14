@@ -87,6 +87,9 @@ class MailClient(object):
                 # __process_attachment shall not be present here: attachments are handled differently
                 }
 
+        self._mails = list() # save the mails numbers provided by the server
+                             # between fetch() and close()
+
     def read_mail_config(self, config_file, param, default=None,
             method=ConfigParser.SafeConfigParser.get):
         return read_param(config_file, 'mail', param, default, method)
@@ -166,12 +169,23 @@ class MailClient(object):
                                      , atts
                                      , str_message.get('Date')
                                      ))
-            if self._delete is True:
+
+            # save email nro for later deletion in close()
+            self._mails.append(email_no)
+
+        return mails
+
+    def close(self):
+        # the server connection should already have been initiated, and mails fetched
+        assert(self._connection is not None)
+
+        # mark mails for deletion on the server
+        if self._delete is True:
+            for email_no in self._mails:
                 Debug("mark message %d for deletion" % email_no)
                 self._connection.dele(email_no)
 
         self._connection.quit()
-        return mails
 
     def __process_text(self, part, email_no):
         Debug("processing text part for email %d" % email_no)

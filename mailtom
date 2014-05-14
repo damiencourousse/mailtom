@@ -24,12 +24,13 @@ class MailToOrg:
         # look for a configuration file for gtdToMail - the default is $HOME/.mailtom.cfg
         cfg = config.find_config_file(options.config, DEFAULT_CFG)
 
+        # create processing objects first, before server connection, so that we
+        # abort before server connection in case of error
         mclient = mailers.MailClient(cfg)
+        printer = printers.MailToOrgMode()
 
         # build the list of mail objects
         mail_list = mclient.fetch()
-
-        printer = printers.MailToOrgMode()
 
         # open the output file if requested, else use stdout
         output = config.read_param(cfg, 'global', 'output')
@@ -46,6 +47,9 @@ class MailToOrg:
 
         if options.output is not None:
             f.close()
+
+        # close server connection
+        mclient.close()
 
 
 def main():
