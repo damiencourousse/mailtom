@@ -19,9 +19,10 @@
 #
 
 
-import re
 import datetime
 import email.utils
+import html2text
+import re
 
 from pytools.logger import Debug, Info, Warn, Error
 
@@ -110,7 +111,6 @@ class MailedAction(object):
         """
         b = self._body
         if b.startswith("<html>"):
-            import html2text
             b = html2text.html2text(b)
 
         body, sep, sign = b.partition("\n-- \n")
@@ -207,7 +207,6 @@ class MailedAction(object):
 
 
 def MailedMain():
-    from email.header import Header
     a = MailedAction("description @context @context2"
                     , """body
                          multilined
