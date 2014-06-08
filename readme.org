@@ -200,7 +200,7 @@ will end into this org-mode task:
 * development notes
 ** pytools git-subtree
    
-Updatin the subtree:
+Updating the subtree:
 
 #+BEGIN_EXAMPLE
 $ git fetch pytools
