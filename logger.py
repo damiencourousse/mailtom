@@ -29,11 +29,14 @@
     ...and target it with debug or info messages:
 
     Info('Something has gone wrong!')
+
+    By default, all messages are pushed to sys.stdout
 """
 
 
 import logging
 from os import path, environ, getcwd
+from sys import stdout
 
 LOG_FILE = path.join(environ['HOME'], 'python_logging.log')
 
@@ -90,7 +93,7 @@ file_h = None
 set_logfile(LOG_FILE)
 
 # define a Handler which writes INFO messages or higher to the sys.stderr
-console_h = logging.StreamHandler()
+console_h = logging.StreamHandler(stdout)
 console_h.setLevel(logging.INFO)
 console_h.setFormatter(logging.Formatter('%(levelname)-8s: %(message)s'))
 # add the handler to the root logger
