@@ -176,7 +176,12 @@ class MailedAction(object):
         d = int(l.pop())
         m = int(l.pop())
         thisy = datetime.datetime.today().year
-        return datetime.date(thisy, m, d)
+        try:
+            date = datetime.date(thisy, m, d)
+        except ValueError:
+            Warn("Incorrect deadline format. Was reading: %s/%s" % (m, d))
+            date = None
+        return date
 
     def __process_dl_dd(self, date):
         """
