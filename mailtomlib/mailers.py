@@ -190,11 +190,12 @@ class MailClient(object):
     def __process_text(self, part, email_no):
         Debug("processing text part for email %d" % email_no)
         try:
-            payload = part.get_payload(decode=True).decode(part.get_content_charset())
             Debug("  charset = %s\n" % part.get_content_charset())
-        except TypeError:
+            payload = part.get_payload(decode=True).decode(part.get_content_charset())
+        except (TypeError, UnicodeError):
             Warn(part)
             Warn("Could not retrieve mail body for email %d." % email_no)
+            # TODO display email title
             payload = "<mail body is missing>"
 
         return payload
