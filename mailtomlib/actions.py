@@ -225,65 +225,81 @@ def MailedMain():
     print a.date()
     print "################################"
     a._subject = "task description"
+    print a._subject
     print a.context()
     print "################################"
     a._subject = "deadline description d:20140302"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "deadline description d:140302"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "deadline description d:0302"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "deadline description d:032"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "deadline description d:04/05"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "deadline description d:04/5"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "deadline description s:032"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "deadline description d:02"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "deadline description d:2"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "deadline description s:02"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "deadline in three days d:+3"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "deadline 2014, march the 3rd d:20140302"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "deadline in 2 weeks d:+2w"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "scheduled in 2 weeks s:+2w"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "################################"
     a._subject = "starts tomorrow, due in 1 week d:+1 s:+1w"
+    print a._subject
     print "> deadline: %s" % a.deadline()
     print "> scheduled: %s" % a.scheduled()
     print "> subject: %s" % a.subject()
